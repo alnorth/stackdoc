@@ -1,0 +1,22 @@
+#mainBody ul.stackdoc {
+	list-style-type: none;
+	-webkit-padding-start: 0;
+	margin-left: 0;
+}
+
+#mainBody ul.stackdoc li {
+	margin-bottom: 2px;
+	list-style-image: none;
+}
+
+#mainBody ul.stackdoc span.sd_score {
+	background-color: #a0a2a7;
+	color: white;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-right: 2px;
+}
+
+#mainBody ul.stackdoc span.sd_score.sd_accepted {
+	color: #E1E818;
+}

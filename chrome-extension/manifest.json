@@ -9,7 +9,8 @@
     "content_scripts": [
         {
             "matches": ["http://msdn.microsoft.com/*"],
-            "js": ["jquery-1.7.2.min.js", "content.js"]
+            "css": ["content.css"],
+            "js": ["jquery-1.7.2.min.js", "Mustache.js", "content.js"]
         }
       ],
     "permissions": [
