@@ -15,7 +15,7 @@ class SOProcessor(handler.ContentHandler):
     def startElement(self, name, attrs):
         if name == "row":
             if attrs["PostTypeId"] == "1":
-                if ("<.net>" in attrs["Tags"] or "<c#>" in attrs["Tags"]) and "http://msdn.microsoft.com/" in attrs["Body"]:
+                if ("<.net>" in attrs["Tags"] or "<c#>" in attrs["Tags"] or "<vb.net>" in attrs["Tags"] or "<asp.net>" in attrs["Tags"] or "<f#>" in attrs["Tags"]) and "http://msdn.microsoft.com/" in attrs["Body"]:
                     matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+)(_[a-z]+)?\.aspx", attrs["Body"])
                     ids = []
                     for match_tuple in matches:
