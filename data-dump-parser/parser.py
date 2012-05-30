@@ -25,7 +25,7 @@ class SOProcessor(handler.ContentHandler):
                     if len(ids) > 0:
                         post = {
                             "page_ids": ids,
-                            "id": int(attrs["Id"]),
+                            "question_id": int(attrs["Id"]),
                             "url": "http://stackoverflow.com/questions/%s" % attrs["Id"],
                             "title": attrs["Title"],
                             "score": int(attrs["Score"]),

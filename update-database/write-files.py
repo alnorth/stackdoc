@@ -14,7 +14,7 @@ for id in posts.distinct("page_ids"):
 	questions = []
 	for q in posts.find({"page_ids": id}):
 		questions.append({
-			"id": q["id"],
+			"id": q["question_id"],
 			"url": q["url"],
 			"title": q["title"],
 			"score": q["score"],
