@@ -1,3 +1,4 @@
+import dateutil.parser
 from pymongo import Connection
 import re
 import sys
@@ -20,7 +21,7 @@ class SOProcessor(handler.ContentHandler):
                     ids = []
                     for match_tuple in matches:
                         ids.append(match_tuple[0])
-                        print match_tuple[0]
+                        print "%s - %s" % (attrs["Id"], match_tuple[0])
                     if len(ids) > 0:
                         post = {
                             "page_ids": ids,
@@ -29,11 +30,11 @@ class SOProcessor(handler.ContentHandler):
                             "title": attrs["Title"],
                             "score": int(attrs["Score"]),
                             "answers": int(attrs["AnswerCount"]) if "AnswerCount" in attrs else 0,
-                            "accepted_answer": "AcceptedAnswerId" in attrs
+                            "accepted_answer": "AcceptedAnswerId" in attrs,
+                            "last_activity": dateutil.parser.parse(attrs["LastActivityDate"])
                         }
                         self._posts.insert(post)
-                        print attrs["Id"]
-            
+
 parser = make_parser()
 parser.setContentHandler(SOProcessor())
 parser.parse(open(sys.argv[1]))
