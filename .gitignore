@@ -27,5 +27,6 @@ pip-log.txt
 .mr.developer.cfg
 
 /data-dump-parser/venv
-/write-db-to-files/dotnet
+/update-database/dotnet
+/update-database/venv
 *.sublime-workspace
