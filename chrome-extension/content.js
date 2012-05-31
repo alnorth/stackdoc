@@ -28,6 +28,7 @@ var msdnSurrounding = '' +
 	'	</div>' +
 	'</div>';
 
+var maxDisplay = 7;
 
 var className = $('link[rel="canonical"]').attr('href');
 // Remove the hostname and first part of the path.
@@ -41,8 +42,13 @@ function url(id) {
 	return "http://stackdoc-dotnet.alnorth.com/" + encodeURIComponent(id) + ".json";
 }
 
+function compareQuestions(a, b) {
+	return b.score - a.score;
+}
+
 $.getJSON(url(className), function(data) {
 	console.log(data);
-	var sdText = Mustache.render(sdTemplate, {questions: data});
+	data.sort(compareQuestions);
+	var sdText = Mustache.render(sdTemplate, {questions: data.slice(0, maxDisplay)});
 	$("#mainBody").append(Mustache.render(msdnSurrounding, {sd: sdText}));
 });
