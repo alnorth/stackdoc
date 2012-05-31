@@ -47,4 +47,4 @@ while not up_to_date:
                     posts.insert(post)
 
                 print "Inserted/updated question from %s " % str(q.last_activity_date)
-                time.sleep(0.01) # Do our own throttling as the built in throttling seems broken
+        time.sleep(0.01) # Do our own throttling as the built in throttling seems broken
