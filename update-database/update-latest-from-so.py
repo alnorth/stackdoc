@@ -20,7 +20,7 @@ while not up_to_date:
     rq = so.recent_questions(min=last_in_database_as_unix, order="asc")
     for q in rq:
         if (".net" in q.tags or "c#" in q.tags or "vb.net" in q.tags or "f#" in q.tags) and "http://msdn.microsoft.com/" in q.body:
-            matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?", q.body)
+            matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", q.body)
             ids = []
             for match_tuple in matches:
                 ids.append(match_tuple[0])
