@@ -34,6 +34,8 @@ class SOProcessor(handler.ContentHandler):
                             "last_activity": dateutil.parser.parse(attrs["LastActivityDate"])
                         }
                         self._posts.insert(post)
+                    else:
+                        print "**** %s - Contains URL prefix, but with no regex matches ****" % attrs["Id"]
 
 parser = make_parser()
 parser.setContentHandler(SOProcessor())
