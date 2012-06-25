@@ -8,12 +8,27 @@ var db = new Db("stack_doc", server);
 
 var port = process.argv[2] || 8000;
 
+function postListToArray(matchingPosts) {
+    var a = [],
+        i = 0;
+    for(i = 0; i < matchingPosts.length; i++) {
+        var q = matchingPosts[i];
+        a.push({
+            id: q["question_id"],
+            url: q["url"],
+            title: q["title"],
+            score: q["score"],
+            answers: q["answers"],
+            accepted_answer: q["accepted_answer"]
+        });
+    }
+    return a;
+}
+
 db.open(function(err, db) {
     if(!err) {
 
         http.createServer(function (req, res) {
-            console.log(req.url);
-
             // Paths like /1/dotnet/system.console.writeline
             var regex = /^\/1\/([a-zA-Z]+)\/([.a-zA-Z0-9_]+)\/?$/,
                 matches = regex.exec(req.url);
@@ -25,12 +40,16 @@ db.open(function(err, db) {
                 db.collection("posts", function(err, posts) {
                     if(!err) {
                         var query = {};
-                        query[language + ".page_ids"] = canonical;
+                        query["page_ids." + language] = canonical;
                         posts.find(query).toArray(function(err, matchingPosts) {
-                            console.log(matchingPosts);
+                            var array = postListToArray(matchingPosts);
+                            res.writeHead(200, {"Content-Type": "text/javascript"});
+                            res.end(JSON.stringify(array));
                         });
                     } else {
                         console.log("MongoDB error", err);
+                        res.writeHead(500, {"Content-Type": "text/javascript"});
+                        res.end("Request error");
                     }
                 });
             }
