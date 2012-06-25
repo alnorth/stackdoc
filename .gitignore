@@ -30,3 +30,4 @@ pip-log.txt
 /update-database/dotnet
 /update-database/venv
 *.sublime-workspace
+/data-api/node_modules
