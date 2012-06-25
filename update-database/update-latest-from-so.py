@@ -17,6 +17,7 @@ def map_msdn_id(msdn_id):
 so = stackexchange.Site(stackexchange.StackOverflow)
 
 so.be_inclusive()
+so.impose_throttling = True
 
 connection = pymongo.Connection()
 db = connection.stackdoc
@@ -59,4 +60,3 @@ for q in rq:
                 posts.insert(post)
 
             print "Inserted/updated question from %s " % str(q.last_activity_date)
-    time.sleep(0.05) # Do our own throttling as the built in throttling seems broken

@@ -1,4 +1,4 @@
 argparse==1.2.1
--e git://github.com/alnorth29/Py-StackExchange.git@f81ed6ec89398f5a35cdb32544b87a5879a4b304#egg=py_stackexchange-dev
+-e git://github.com/alnorth29/Py-StackExchange.git@d4f5c38b122aa6951cd8c965944426b854835147#egg=py_stackexchange-dev
 pymongo==2.2
 wsgiref==0.1.2
