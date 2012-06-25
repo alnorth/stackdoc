@@ -43,12 +43,12 @@ db.open(function(err, db) {
                         query["page_ids." + language] = canonical;
                         posts.find(query).toArray(function(err, matchingPosts) {
                             var array = postListToArray(matchingPosts);
-                            res.writeHead(200, {"Content-Type": "text/javascript"});
+                            res.writeHead(200, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
                             res.end(JSON.stringify(array));
                         });
                     } else {
                         console.log("MongoDB error", err);
-                        res.writeHead(500, {"Content-Type": "text/javascript"});
+                        res.writeHead(500, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
                         res.end("Request error");
                     }
                 });
