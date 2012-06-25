@@ -38,15 +38,15 @@ className = className.replace(/(_[a-z]+)?\.aspx$/, "");
 
 var shortId = $('meta[name="Search.ShortId"]').attr('content');
 
-function url(id) {
-	return "http://stackdoc-dotnet.alnorth.com/" + encodeURIComponent(id) + ".json";
+function url(language, id) {
+	return "http://stackdocapi.alnorth.com/1/" + encodeURIComponent(language) + "/" + encodeURIComponent(id);
 }
 
 function compareQuestions(a, b) {
 	return b.score - a.score;
 }
 
-$.getJSON(url(className), function(data) {
+$.getJSON(url("dotnet", className), function(data) {
 	console.log(data);
 	data.sort(compareQuestions);
 	var sdText = Mustache.render(sdTemplate, {questions: data.slice(0, maxDisplay)});
