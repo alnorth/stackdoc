@@ -2,6 +2,17 @@ import pymongo
 import stackexchange
 import re
 import time
+import urllib
+
+def is_msdn_id(string):
+    return bool(re.match("^[a-zA-Z0-9]{8}$", string))
+
+def map_msdn_id(msdn_id):
+    if is_msdn_id(msdn_id):
+        handle = urllib.urlopen("http://msdnid.alnorth.com/" + msdn_id)
+        if handle.getcode() == 200:
+            canonical = handle.readline()
+            return canonical
 
 so = stackexchange.Site(stackexchange.StackOverflow)
 
@@ -20,7 +31,11 @@ for q in rq:
         matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", q.body)
         ids = []
         for match_tuple in matches:
-            ids.append(match_tuple[0])
+            match_id = match_tuple[0]
+            ids.append(match_id)
+            mapped_id = map_msdn_id(match_id)
+            if mapped_id:
+                ids.append(mapped_id)
         if len(ids) > 0:
             post = posts.find_one({"question_id": q.id})
             previously_existed = False
