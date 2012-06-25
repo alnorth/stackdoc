@@ -40,7 +40,7 @@ class SOProcessor(handler.ContentHandler):
                         print "%s - %s" % (attrs["Id"], match_id)
                     if len(ids) > 0:
                         post = {
-                            "page_ids": ids,
+                            "page_ids": {"dotnet": ids},
                             "question_id": int(attrs["Id"]),
                             "url": "http://stackoverflow.com/questions/%s" % attrs["Id"],
                             "title": attrs["Title"],
