@@ -4,7 +4,7 @@ var mongo = require("mongodb"),
     http = require("http");
 
 var server = new Server("localhost", 27017, {auto_reconnect: true});
-var db = new Db("stack_doc", server);
+var db = new Db("stackdoc", server);
 
 var port = process.argv[2] || 8000;
 

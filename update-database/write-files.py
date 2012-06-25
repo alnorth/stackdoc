@@ -4,7 +4,7 @@ from pymongo import Connection
 import shutil
 
 connection = Connection()
-db = connection.stack_doc
+db = connection.stackdoc
 posts = db.posts
 
 shutil.rmtree("dotnet", True)

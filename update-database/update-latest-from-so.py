@@ -19,7 +19,7 @@ so = stackexchange.Site(stackexchange.StackOverflow)
 so.be_inclusive()
 
 connection = pymongo.Connection()
-db = connection.stack_doc
+db = connection.stackdoc
 posts = db.posts
 
 last_in_database = posts.find_one(sort=[("last_activity", pymongo.DESCENDING)])["last_activity"]
