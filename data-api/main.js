@@ -14,6 +14,27 @@ db.open(function(err, db) {
         http.createServer(function (req, res) {
             console.log(req.url);
 
+            // Paths like /1/dotnet/system.console.writeline
+            var regex = /^\/1\/([a-zA-Z]+)\/([.a-zA-Z0-9_]+)\/?$/,
+                matches = regex.exec(req.url);
+
+            if(matches) {
+                var language = matches[1],
+                    canonical = matches[2];
+
+                db.collection("posts", function(err, posts) {
+                    if(!err) {
+                        var query = {};
+                        query[language + ".page_ids"] = canonical;
+                        posts.find(query).toArray(function(err, matchingPosts) {
+                            console.log(matchingPosts);
+                        });
+                    } else {
+                        console.log("MongoDB error", err);
+                    }
+                });
+            }
+
         }).listen(port);
 
     } else {
