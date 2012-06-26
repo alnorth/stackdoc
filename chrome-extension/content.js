@@ -42,7 +42,7 @@ $.getJSON(url("dotnet", className), function(data) {
 		$sdTitle.popover({
 			content: sdText,
 			classes: "large"
-		});
+		}).addClass("clickable");
 	}
 
 	$sd.insertAfter($("#vsPanel"));
