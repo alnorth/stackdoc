@@ -19,7 +19,7 @@ class SOProcessor(handler.ContentHandler):
 
     def __init__(self):
         connection = Connection()
-        self._db = connection.stack_doc
+        self._db = connection.stackdoc
         self._posts = self._db.posts
         # Get rid of all existing data
         self._posts.remove()
