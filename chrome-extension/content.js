@@ -1,14 +1,14 @@
 
 // Templates
 var sdTemplate = '' +
-	'<ul class="stackdoc">' +
+	'<table class="stackdoc">' +
 	'{{#questions}}' +
-	'	<li>' +
-	'		<span class="sd_score {{#accepted_answer}}sd_accepted{{/accepted_answer}}">{{score}}</span>' +
-	'		<a href="{{url}}" title="{{answers}} answers{{#accepted_answer}}, with one accepted answer{{/accepted_answer}}">{{title}}</a>' +
-	'	</li>' +
+	'	<tr>' +
+	'		<td><span class="sd_score {{#accepted_answer}}sd_accepted{{/accepted_answer}}">{{score}}</span></td>' +
+	'		<td class="stackdoc-question-title"><a href="{{url}}" title="{{answers}} answers{{#accepted_answer}}, with one accepted answer{{/accepted_answer}}">{{title}}</a></td>' +
+	'	</tr>' +
 	'{{/questions}}' +
-	'</ul>';
+	'</table>';
 var msdnSurrounding = '' +
 	'<div class="cl_lw_vs_seperator" style="display: block; "></div>' +
 	'<div id="stackdoc-title">' +
@@ -38,10 +38,12 @@ $.getJSON(url("dotnet", className), function(data) {
 		$sd = $(fullText),
 		$sdTitle = $($.grep($sd, function(x) { return x.id === "stackdoc-title"; })[0]);
 
-	$sdTitle.popover({
-		content: sdText,
-		classes: "large"
-	});
+	if(data.length > 0) {
+		$sdTitle.popover({
+			content: sdText,
+			classes: "large"
+		});
+	}
 
-	$sd.insertAfter($("#ratingCounter"));
+	$sd.insertAfter($("#vsPanel"));
 });

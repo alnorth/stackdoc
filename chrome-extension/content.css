@@ -1,15 +1,14 @@
-ul.stackdoc {
-	list-style-type: none;
-	-webkit-padding-start: 0;
-	margin-left: 0;
+table.stackdoc {
+	border-width: 0px;
 }
 
-ul.stackdoc li {
-	margin-bottom: 3px;
-	list-style-image: none;
+table.stackdoc td {
+	border-width: 0px;
+	vertical-align: top;
+	padding-bottom: 5px;
 }
 
-ul.stackdoc span.sd_score {
+table.stackdoc span.sd_score {
 	padding-left: 3px;
 	padding-right: 3px;
 	margin-right: 2px;
@@ -17,7 +16,11 @@ ul.stackdoc span.sd_score {
 	float: left;
 }
 
-ul.stackdoc span.sd_score.sd_accepted {
+table.stackdoc td.stackdoc-question-title {
+	padding-top: 2px;
+}
+
+table.stackdoc span.sd_score.sd_accepted {
 	border-color: green;
 }
 
