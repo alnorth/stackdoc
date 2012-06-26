@@ -10,25 +10,10 @@ var sdTemplate = '' +
 	'{{/questions}}' +
 	'</ul>';
 var msdnSurrounding = '' +
-	'<div>' +
-	'	<div class="LW_CollapsibleArea_TitleDiv">' +
-	'		<div>' +
-	'			<a href="javascript:void(0)" class="LW_CollapsibleArea_TitleAhref" title="Collapse">' +
-	'				<img src="http://i3.msdn.microsoft.com/Areas/Global/Content/clear.gif" class="cl_CollapsibleArea_expanding LW_CollapsibleArea_Img"' +
-	'				><span class="LW_CollapsibleArea_Title">Stack Overflow</span>' +
-	'			</a>' +
-	'			<div class="LW_CollapsibleArea_HrDiv">' +
-	'				<hr class="LW_CollapsibleArea_Hr">' +
-	'			</div>' +
-	'		</div>' +
-	'	</div>' +
-	'	<div class="sectionblock">' +
-	'		<a id="stackDocToggle" xmlns="http://www.w3.org/1999/xhtml"></a>' +
-	'		{{&sd}}' +
-	'	</div>' +
+	'<div class="cl_lw_vs_seperator" style="display: block; "></div>' +
+	'<div id="stackdoc-title">' +
+	'	{{count}} Stack Overflow questions' +
 	'</div>';
-
-var maxDisplay = 7;
 
 var className = $('link[rel="canonical"]').attr('href');
 // Remove the hostname and first part of the path.
@@ -47,8 +32,16 @@ function compareQuestions(a, b) {
 }
 
 $.getJSON(url("dotnet", className), function(data) {
-	console.log(data);
 	data.sort(compareQuestions);
-	var sdText = Mustache.render(sdTemplate, {questions: data.slice(0, maxDisplay)});
-	$("#mainBody").append(Mustache.render(msdnSurrounding, {sd: sdText}));
+	var sdText = Mustache.render(sdTemplate, {questions: data}),
+		fullText = Mustache.render(msdnSurrounding, {count: data.length}),
+		$sd = $(fullText),
+		$sdTitle = $($.grep($sd, function(x) { return x.id === "stackdoc-title"; })[0]);
+
+	$sdTitle.popover({
+		content: sdText,
+		classes: "large"
+	});
+
+	$sd.insertAfter($("#ratingCounter"));
 });

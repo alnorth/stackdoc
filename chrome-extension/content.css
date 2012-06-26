@@ -1,21 +1,28 @@
-#mainBody ul.stackdoc {
+ul.stackdoc {
 	list-style-type: none;
 	-webkit-padding-start: 0;
 	margin-left: 0;
 }
 
-#mainBody ul.stackdoc li {
+ul.stackdoc li {
 	margin-bottom: 3px;
 	list-style-image: none;
 }
 
-#mainBody ul.stackdoc span.sd_score {
+ul.stackdoc span.sd_score {
 	padding-left: 3px;
 	padding-right: 3px;
 	margin-right: 2px;
 	border: 1px solid #a0a2a7;
+	float: left;
 }
 
-#mainBody ul.stackdoc span.sd_score.sd_accepted {
+ul.stackdoc span.sd_score.sd_accepted {
 	border-color: green;
+}
+
+#stackdoc-title {
+	color: #5D5D5D;
+	margin-left: 13px;
+	cursor: pointer;
 }
