@@ -18,6 +18,7 @@ table.stackdoc span.sd_score {
 
 table.stackdoc td.stackdoc-question-title {
 	padding-top: 2px;
+	padding-left: 4px;
 }
 
 table.stackdoc span.sd_score.sd_accepted {
