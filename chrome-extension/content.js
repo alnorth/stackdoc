@@ -19,7 +19,7 @@ var className = $('link[rel="canonical"]').attr('href');
 // Remove the hostname and first part of the path.
 className = className.replace(/^.*\//, "");
 // Remove the aspx extension and optional bits on the end of the class name like "_events".
-className = className.replace(/(_[a-z]+)?\.aspx$/, "");
+className = className.replace(/(_[a-z]+)?(\(v=vs\.\d+\))?\.aspx$/, "");
 
 var shortId = $('meta[name="Search.ShortId"]').attr('content');
 
