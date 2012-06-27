@@ -12,7 +12,7 @@ var sdTemplate = '' +
 var msdnSurrounding = '' +
 	'<div class="cl_lw_vs_seperator" style="display: block; "></div>' +
 	'<div id="stackdoc-title">' +
-	'	{{count}} Stack Overflow questions' +
+	'	{{count}} Stack Overflow question{{^count_is_one}}s{{/count_is_one}}' +
 	'</div>';
 
 var className = $('link[rel="canonical"]').attr('href');
@@ -34,7 +34,7 @@ function compareQuestions(a, b) {
 $.getJSON(url("dotnet", className), function(data) {
 	data.sort(compareQuestions);
 	var sdText = Mustache.render(sdTemplate, {questions: data}),
-		fullText = Mustache.render(msdnSurrounding, {count: data.length}),
+		fullText = Mustache.render(msdnSurrounding, {count: data.length, count_is_one: data.length === 1}),
 		$sd = $(fullText),
 		$sdTitle = $($.grep($sd, function(x) { return x.id === "stackdoc-title"; })[0]);
 
