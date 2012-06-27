@@ -52,6 +52,9 @@ db.open(function(err, db) {
                         res.end("Request error");
                     }
                 });
+            } else {
+                res.writeHead(404, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
+                res.end();
             }
 
         }).listen(port);
