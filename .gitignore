@@ -26,8 +26,7 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-/data-dump-parser/venv
-/update-database/dotnet
-/update-database/venv
+/update-database/data-dump-processor-venv
+/update-database/update-from-so-venv
 *.sublime-workspace
 /data-api/node_modules
