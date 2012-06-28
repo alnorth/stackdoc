@@ -1,19 +1,17 @@
 import dateutil.parser
+import os.path
+import pkgutil
 from pymongo import Connection
-import re
 import sys
-import urllib
 from xml.sax import make_parser, handler
 
-def is_msdn_id(string):
-    return bool(re.match("^[a-zA-Z0-9]{8}$", string))
+import stackdoc.languages
 
-def map_msdn_id(msdn_id):
-    if is_msdn_id(msdn_id):
-        handle = urllib.urlopen("http://msdnid.alnorth.com/" + msdn_id)
-        if handle.getcode() == 200:
-            canonical = handle.readline()
-            return canonical
+languages = []
+for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.languages.__path__):
+    languages.append(__import__("stackdoc.languages.%s" % modname, fromlist="dummy"))
+
+"""
 
 class SOProcessor(handler.ContentHandler):
 
@@ -53,6 +51,8 @@ class SOProcessor(handler.ContentHandler):
                     else:
                         print "**** %s - Contains URL prefix, but with no regex matches ****" % attrs["Id"]
 
+
 parser = make_parser()
 parser.setContentHandler(SOProcessor())
 parser.parse(open(sys.argv[1]))
+"""
