@@ -5,9 +5,19 @@
     "description": "Adds Stackoverflow question lists to MSDN documentation.",
     "content_scripts": [
         {
+            "matches": ["<all_urls>"],
+            "css": ["lib/popover.css", "main.css"],
+            "js": [
+                "lib/jquery-1.7.2.min.js",
+                "lib/jquery.popover-1.1.0.js",
+                "lib/Mustache.js",
+                "main.js"
+            ]
+        },
+        {
             "matches": ["http://msdn.microsoft.com/*"],
-            "css": ["popover.css", "content.css"],
-            "js": ["jquery-1.7.2.min.js", "jquery.popover-1.1.0.js", "Mustache.js", "content.js"]
+            "css": ["language-files/dotnet-msdn.css"],
+            "js": ["language-files/dotnet-msdn.js"]
         }
       ],
     "permissions": [

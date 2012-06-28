@@ -1,0 +1,13 @@
+#stackdoc-title {
+    color: #5D5D5D;
+    margin-left: 13px;
+}
+
+#stackdoc-title.clickable {
+    cursor: pointer;
+}
+
+#stackdoc-title.clickable:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
