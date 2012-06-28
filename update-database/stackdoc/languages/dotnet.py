@@ -4,9 +4,9 @@ import urllib
 
 ############### Functions called by stackdoc
 
-def get_ids(question_body):
+def get_ids(body):
     ids = []
-    if "http://msdn.microsoft.com/en-us/library/" in question_body:
+    if "http://msdn.microsoft.com/en-us/library/" in body:
         matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", question_body)
         for match_tuple in matches:
             match_id = match_tuple[0]

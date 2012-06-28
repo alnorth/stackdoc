@@ -1,8 +1,15 @@
+import pkgutil
 import pymongo
 import stackexchange
 import re
 import time
 import urllib
+
+import stackdoc.languages
+
+languages = []
+for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.languages.__path__):
+    languages.append(__import__("stackdoc.languages.%s" % modname, fromlist="dummy"))
 
 def is_msdn_id(string):
     return bool(re.match("^[a-zA-Z0-9]{8}$", string))
@@ -28,35 +35,29 @@ last_in_database_as_unix = int(time.mktime(last_in_database.timetuple()))
 print "Fetching questions active after %s" % str(last_in_database)
 rq = so.recent_questions(min=last_in_database_as_unix, order="asc")
 for q in rq:
-    if (".net" in q.tags or "c#" in q.tags or "vb.net" in q.tags or "f#" in q.tags) and "http://msdn.microsoft.com/en-us/library/" in q.body:
-        matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", q.body)
-        ids = []
-        for match_tuple in matches:
-            match_id = match_tuple[0]
-            ids.append(match_id)
-            mapped_id = map_msdn_id(match_id)
-            if mapped_id:
-                ids.append(mapped_id)
-        if len(ids) > 0:
-            post = posts.find_one({"question_id": q.id})
-            previously_existed = False
-            if post:
-                previously_existed = True
-            else:
-                post = {}
+    for l in languages:
+        if any(map(lambda x: x in q.tags, l.get_tags())):
+            ids = l.get_ids(q.body)
+            if len(ids) > 0:
+                post = posts.find_one({"question_id": q.id})
+                previously_existed = False
+                if post:
+                    previously_existed = True
+                else:
+                    post = {}
 
-            post["page_ids"] = {"dotnet": ids}
-            post["question_id"] = int(q.id)
-            post["url"] = "http://stackoverflow.com/questions/%s" % q.id
-            post["title"] = q.title
-            post["score"] = int(q.score)
-            post["answers"] = int(q.answer_count)
-            post["accepted_answer"] = hasattr(q, "accepted_answer_id")
-            post["last_activity"] = q.last_activity_date
+                post["page_ids"] = {"dotnet": ids}
+                post["question_id"] = int(q.id)
+                post["url"] = "http://stackoverflow.com/questions/%s" % q.id
+                post["title"] = q.title
+                post["score"] = int(q.score)
+                post["answers"] = int(q.answer_count)
+                post["accepted_answer"] = hasattr(q, "accepted_answer_id")
+                post["last_activity"] = q.last_activity_date
 
-            if previously_existed:
-                posts.update({"question_id": q.id}, post)
-            else:
-                posts.insert(post)
+                if previously_existed:
+                    posts.update({"question_id": q.id}, post)
+                else:
+                    posts.insert(post)
 
-            print "Inserted/updated question from %s " % str(q.last_activity_date)
+                print "Inserted/updated question from %s " % str(q.last_activity_date)
