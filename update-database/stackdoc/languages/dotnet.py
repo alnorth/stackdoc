@@ -4,6 +4,9 @@ import urllib
 
 ############### Functions called by stackdoc
 
+def get_name():
+    return "dotnet"
+
 def get_ids(title, body, tags):
     ids = []
     if "http://msdn.microsoft.com/en-us/library/" in body:
