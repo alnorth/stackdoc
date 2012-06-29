@@ -1,8 +1,10 @@
 #!/bin/bash
 
-virtualenv --no-site-packages venv
-venv/bin/pip install -r requirements.txt
+BASEDIR=$(dirname $0)
 
-venv/bin/python update-database.py $1
+virtualenv --no-site-packages $BASEDIR/venv
+$BASEDIR/venv/bin/pip install -r $BASEDIR/requirements.txt
 
-rm -rf venv
+$BASEDIR/venv/bin/python $BASEDIR/update-database.py $1
+
+rm -rf $BASEDIR/venv
