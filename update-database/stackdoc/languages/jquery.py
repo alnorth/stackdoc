@@ -13,7 +13,6 @@ def get_ids(title, body, tags):
         matches =  re.findall(r"http://api\.jquery\.com/([.\-a-zA-Z0-9]+)/?", body)
         for match_id in matches:
             ids.append(match_id)
-            print match_id
     return ids
 
 def get_tags():
