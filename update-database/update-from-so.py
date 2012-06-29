@@ -46,7 +46,7 @@ for q in rq:
                 else:
                     post = {}
 
-                post["page_ids"] = {"dotnet": ids}
+                post["namespaces"] = {"dotnet": ids}
                 post["question_id"] = int(q.id)
                 post["url"] = "http://stackoverflow.com/questions/%s" % q.id
                 post["title"] = q.title

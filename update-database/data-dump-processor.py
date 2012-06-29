@@ -29,7 +29,7 @@ class SOProcessor(handler.ContentHandler):
 
                         if len(ids) > 0:
                             post = {
-                                "page_ids": {"dotnet": ids},
+                                "namespaces": {"dotnet": ids},
                                 "question_id": int(attrs["Id"]),
                                 "url": "http://stackoverflow.com/questions/%s" % attrs["Id"],
                                 "title": attrs["Title"],

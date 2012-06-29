@@ -34,13 +34,13 @@ db.open(function(err, db) {
                 matches = regex.exec(req.url);
 
             if(matches) {
-                var language = matches[1],
+                var namespace = matches[1],
                     canonical = matches[2];
 
                 db.collection("posts", function(err, posts) {
                     if(!err) {
                         var query = {};
-                        query["page_ids." + language] = canonical;
+                        query["namespaces." + namespace] = canonical;
                         posts.find(query).toArray(function(err, matchingPosts) {
                             var array = postListToArray(matchingPosts);
                             res.writeHead(200, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
