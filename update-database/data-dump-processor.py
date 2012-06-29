@@ -24,8 +24,9 @@ class SOProcessor(handler.ContentHandler):
         if name == "row":
             if attrs["PostTypeId"] == "1":
                 for l in languages:
-                    if any(map(lambda x: ("<%s>" % x) in attrs["Tags"], l.get_tags())):
-                        ids = l.get_ids(attrs["Body"])
+                    tags = attrs["Tags"].lstrip("<").rstrip(">").split("><")
+                    if any(map(lambda x: x in tags, l.get_tags())):
+                        ids = l.get_ids(attrs["Title"], attrs["Body"], tags)
 
                         if len(ids) > 0:
                             post = {

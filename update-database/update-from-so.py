@@ -37,7 +37,7 @@ rq = so.recent_questions(min=last_in_database_as_unix, order="asc")
 for q in rq:
     for l in languages:
         if any(map(lambda x: x in q.tags, l.get_tags())):
-            ids = l.get_ids(q.body)
+            ids = l.get_ids(q.title, q.body, q.tags)
             if len(ids) > 0:
                 post = posts.find_one({"question_id": q.id})
                 previously_existed = False
