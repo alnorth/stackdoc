@@ -7,6 +7,9 @@ import urllib
 def get_name():
     return "jquery"
 
+def get_version():
+    return 1
+
 def get_ids(title, body, tags):
     ids = []
     if "http://api.jquery.com/" in body:

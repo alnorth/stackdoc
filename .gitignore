@@ -28,5 +28,6 @@ pip-log.txt
 
 /update-database/data-dump-processor-venv
 /update-database/update-from-so-venv
+/update-database/venv
 *.sublime-workspace
 /data-api/node_modules

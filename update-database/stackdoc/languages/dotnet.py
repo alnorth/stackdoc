@@ -7,6 +7,9 @@ import urllib
 def get_name():
     return "dotnet"
 
+def get_version():
+    return 1
+
 def get_ids(title, body, tags):
     ids = []
     if "http://msdn.microsoft.com/en-us/library/" in body:
