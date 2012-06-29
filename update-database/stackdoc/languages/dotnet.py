@@ -17,7 +17,24 @@ def get_ids(body):
     return ids
 
 def get_tags():
-    return [".net", "c#", "vb.net", "asp.net", "f#"]
+    return [
+        ".net",
+        ".net-1.1",
+        ".net-2.0",
+        ".net-3.5",
+        ".net-4.0",
+        "c#",
+        "vb.net",
+        "f#",
+        "asp.net",
+        "asp.net-ajax",
+        "asp.net-membership",
+        "asp.net-mvc",
+        "asp.net-mvc-2",
+        "asp.net-mvc-3",
+        "wcf",
+        "wpf"
+    ]
 
 
 ############### Internal (private) functions
