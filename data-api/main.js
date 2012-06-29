@@ -30,7 +30,7 @@ db.open(function(err, db) {
 
         http.createServer(function (req, res) {
             // Paths like /1/dotnet/system.console.writeline
-            var regex = /^\/1\/([a-zA-Z]+)\/([.a-zA-Z0-9_]+)\/?$/,
+            var regex = /^\/1\/([a-zA-Z]+)\/([.a-zA-Z0-9_\-]+)\/?$/,
                 matches = regex.exec(req.url);
 
             if(matches) {
