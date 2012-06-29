@@ -23,23 +23,28 @@ class SOProcessor(handler.ContentHandler):
     def startElement(self, name, attrs):
         if name == "row":
             if attrs["PostTypeId"] == "1":
+                namespaces = {}
                 for l in languages:
                     tags = attrs["Tags"].lstrip("<").rstrip(">").split("><")
                     if any(map(lambda x: x in tags, l.get_tags())):
                         ids = l.get_ids(attrs["Title"], attrs["Body"], tags)
-
                         if len(ids) > 0:
-                            post = {
-                                "namespaces": {"dotnet": ids},
-                                "question_id": int(attrs["Id"]),
-                                "url": "http://stackoverflow.com/questions/%s" % attrs["Id"],
-                                "title": attrs["Title"],
-                                "score": int(attrs["Score"]),
-                                "answers": int(attrs["AnswerCount"]) if "AnswerCount" in attrs else 0,
-                                "accepted_answer": "AcceptedAnswerId" in attrs,
-                                "last_activity": dateutil.parser.parse(attrs["LastActivityDate"])
-                            }
-                            self._posts.insert(post)
+                            namespaces[l.get_name()] = ids
+
+                if len(namespaces) > 0:
+                    last_activity_date = dateutil.parser.parse(attrs["LastActivityDate"])
+                    post = {
+                        "namespaces": namespaces,
+                        "question_id": int(attrs["Id"]),
+                        "url": "http://stackoverflow.com/questions/%s" % attrs["Id"],
+                        "title": attrs["Title"],
+                        "score": int(attrs["Score"]),
+                        "answers": int(attrs["AnswerCount"]) if "AnswerCount" in attrs else 0,
+                        "accepted_answer": "AcceptedAnswerId" in attrs,
+                        "last_activity": last_activity_date
+                    }
+                    self._posts.insert(post)
+                    print "Inserted %s question from %s (%s)" % (", ".join(namespaces.keys()), str(last_activity_date), attrs["Id"])
 
 
 parser = make_parser()

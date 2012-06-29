@@ -35,29 +35,33 @@ last_in_database_as_unix = int(time.mktime(last_in_database.timetuple()))
 print "Fetching questions active after %s" % str(last_in_database)
 rq = so.recent_questions(min=last_in_database_as_unix, order="asc")
 for q in rq:
+    namespaces = {}
     for l in languages:
         if any(map(lambda x: x in q.tags, l.get_tags())):
             ids = l.get_ids(q.title, q.body, q.tags)
             if len(ids) > 0:
-                post = posts.find_one({"question_id": q.id})
-                previously_existed = False
-                if post:
-                    previously_existed = True
-                else:
-                    post = {}
+                namespaces[l.get_name()] = ids
 
-                post["namespaces"] = {"dotnet": ids}
-                post["question_id"] = int(q.id)
-                post["url"] = "http://stackoverflow.com/questions/%s" % q.id
-                post["title"] = q.title
-                post["score"] = int(q.score)
-                post["answers"] = int(q.answer_count)
-                post["accepted_answer"] = hasattr(q, "accepted_answer_id")
-                post["last_activity"] = q.last_activity_date
+    if len(namespaces):
+        post = posts.find_one({"question_id": q.id})
+        previously_existed = False
+        if post:
+            previously_existed = True
+        else:
+            post = {}
 
-                if previously_existed:
-                    posts.update({"question_id": q.id}, post)
-                else:
-                    posts.insert(post)
+        post["namespaces"] = namespaces
+        post["question_id"] = int(q.id)
+        post["url"] = "http://stackoverflow.com/questions/%s" % q.id
+        post["title"] = q.title
+        post["score"] = int(q.score)
+        post["answers"] = int(q.answer_count)
+        post["accepted_answer"] = hasattr(q, "accepted_answer_id")
+        post["last_activity"] = q.last_activity_date
 
-                print "Inserted/updated question from %s " % str(q.last_activity_date)
+        if previously_existed:
+            posts.update({"question_id": q.id}, post)
+        else:
+            posts.insert(post)
+
+        print "%s %s question from %s (%s)" % ("Updated" if previously_existed else "Inserted", ", ".join(namespaces.keys()), str(q.last_activity_date), q.id)
