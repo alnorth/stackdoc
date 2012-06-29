@@ -11,8 +11,7 @@ def get_ids(title, body, tags):
     ids = []
     if "http://api.jquery.com/" in body:
         matches =  re.findall(r"http://api\.jquery\.com/([.\-a-zA-Z0-9]+)/?", body)
-        for match_tuple in matches:
-            match_id = match_tuple[0]
+        for match_id in matches:
             ids.append(match_id)
             print match_id
     return ids
