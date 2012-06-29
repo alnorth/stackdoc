@@ -29,6 +29,7 @@ class SOProcessor(handler.ContentHandler):
                     if any(map(lambda x: x in tags, l.get_tags())):
                         ids = l.get_ids(attrs["Title"], attrs["Body"], tags)
                         if len(ids) > 0:
+                            ids = map(lambda x: x.lower(), ids)
                             namespaces[l.get_name()] = ids
 
                 if len(namespaces) > 0:

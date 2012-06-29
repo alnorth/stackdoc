@@ -40,7 +40,7 @@ db.open(function(err, db) {
                 db.collection("posts", function(err, posts) {
                     if(!err) {
                         var query = {};
-                        query["namespaces." + namespace] = canonical;
+                        query["namespaces." + namespace] = canonical.toLowerCase();
                         posts.find(query).toArray(function(err, matchingPosts) {
                             var array = postListToArray(matchingPosts);
                             res.writeHead(200, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});

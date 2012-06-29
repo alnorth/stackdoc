@@ -40,6 +40,7 @@ for q in rq:
         if any(map(lambda x: x in q.tags, l.get_tags())):
             ids = l.get_ids(q.title, q.body, q.tags)
             if len(ids) > 0:
+                ids = map(lambda x: x.lower(), ids)
                 namespaces[l.get_name()] = ids
 
     if len(namespaces):
