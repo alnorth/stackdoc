@@ -20,12 +20,14 @@ var stackdoc = (function() {
 	}
 
 	module.fetchData = function(namespace, id, callback) {
-		$.getJSON(url(namespace, id), function(data) {
-			data.sort(compareQuestions);
-			var renderedList = Mustache.render(sdTemplate, {questions: data});
+		if(id) {
+			$.getJSON(url(namespace, id), function(data) {
+				data.sort(compareQuestions);
+				var renderedList = Mustache.render(sdTemplate, {questions: data});
 
-			callback(data, renderedList);
-		});
+				callback(data, renderedList);
+			});
+		}
 	}
 
 	return module;

@@ -1,0 +1,29 @@
+#stackdoc-title {
+    float: left;
+    margin-left: 0;
+    color: #222;
+    display: block;
+}
+
+#stackdoc-title.clickable {
+    cursor: pointer;
+}
+
+#stackdoc-title.clickable:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+table.stackdoc span.sd_score {
+    color: #222;
+    display: inline-block;
+    padding: 1px 3px;
+}
+
+table.stackdoc {
+    font-size: 12px;
+}
+
+table.stackdoc a, table.stackdoc a:visited, table.stackdoc a:hover {
+    color: #0F67A1;
+}

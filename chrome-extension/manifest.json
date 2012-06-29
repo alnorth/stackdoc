@@ -18,6 +18,11 @@
             "matches": ["http://msdn.microsoft.com/*"],
             "css": ["language-files/dotnet-msdn.css"],
             "js": ["language-files/dotnet-msdn.js"]
+        },
+        {
+            "matches": ["http://api.jquery.com/*"],
+            "css": ["language-files/jquery.css"],
+            "js": ["language-files/jquery.js"]
         }
       ],
     "permissions": [
