@@ -1,7 +1,9 @@
 import dateutil.parser
 import pkgutil
 from pymongo import Connection
+import stackexchange
 import sys
+import time
 from xml.sax import make_parser, handler
 
 from stackdoc.questionimport import import_question
@@ -80,7 +82,35 @@ if version_outdated:
 
 
 # Load SO questions from the earliest last activity date
+so = stackexchange.Site(stackexchange.StackOverflow)
+so.be_inclusive()
+so.impose_throttling = True
 
+latest_activity_date = settings.find_one({"key": "latest_activity_date"})["value"]
+latest_activity_date_as_unix = int(time.mktime(latest_activity_date.timetuple()))
+print "Fetching questions active after %s" % str(latest_activity_date)
+rq = so.recent_questions(min=latest_activity_date_as_unix, order="asc")
+index = 0
+for q in rq:
+    import_question(
+        posts,
+        languages,
+        int(q.id),
+        q.title,
+        q.body,
+        q.tags,
+        q.last_activity_date,
+        int(q.score),
+        int(q.answer_count),
+        hasattr(q, "accepted_answer_id")
+    )
 
-# Every 100 questions set the last activity date for all languages to at least that in the current question
+    # Every 100 questions set the last activity date
+    index += 1
+    if index % 100 == 0:
+        settings.update(
+            {"key": "latest_activity_date"},
+            {"key": "latest_activity_date", "value": q.last_activity_date},
+            upsert=True
+        )
 
