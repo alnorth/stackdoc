@@ -111,9 +111,9 @@ for q in rq:
         hasattr(q, "accepted_answer_id")
     )
 
-    # Every 100 questions set the last activity date
+    # Every 20 questions set the last activity date
     index += 1
-    if index % 100 == 0:
+    if index % 20 == 0:
         settings.update(
             {"key": "latest_activity_date"},
             {"key": "latest_activity_date", "value": q.last_activity_date},
