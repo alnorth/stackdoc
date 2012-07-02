@@ -16,13 +16,13 @@
         },
         {
             "matches": ["http://msdn.microsoft.com/*"],
-            "css": ["language-files/dotnet-msdn.css"],
-            "js": ["language-files/dotnet-msdn.js"]
+            "css": ["namespace-files/dotnet-msdn.css"],
+            "js": ["namespace-files/dotnet-msdn.js"]
         },
         {
             "matches": ["http://api.jquery.com/*"],
-            "css": ["language-files/jquery.css"],
-            "js": ["language-files/jquery.js"]
+            "css": ["namespace-files/jquery.css"],
+            "js": ["namespace-files/jquery.js"]
         }
       ],
     "permissions": [

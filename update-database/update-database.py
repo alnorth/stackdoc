@@ -7,39 +7,39 @@ import time
 from xml.sax import make_parser, handler
 
 from stackdoc.questionimport import import_question
-import stackdoc.languages
+import stackdoc.namespaces
 
 
 # Set up the database connection
 connection = Connection()
 db = connection.stackdoc
 posts = db.posts
-language_records = db.languages
+namespace_records = db.namespaces
 settings = db.settings
 
 
-# Load the list of languages
-languages = []
-for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.languages.__path__):
-    languages.append(__import__("stackdoc.languages.%s" % modname, fromlist="dummy"))
+# Load the list of namespaces
+namespaces = []
+for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.namespaces.__path__):
+    namespaces.append(__import__("stackdoc.namespaces.%s" % modname, fromlist="dummy"))
 
 
 # Make sure the correct indexes are in place
 posts.ensure_index("question_id", unique=True)
-for l in languages:
-    posts.ensure_index("namespaces.%s" % l.get_name())
+for n in namespaces:
+    posts.ensure_index("namespaces.%s" % n.get_name())
 
 
 # Check if any versions are different from the saved versions
 version_outdated = False
-for l in languages:
-    record = language_records.find_one({"name": l.get_name()})
+for n in namespaces:
+    record = namespace_records.find_one({"name": n.get_name()})
     if record:
-        if record["version"] != l.get_version():
-            print "Namespace %s outdated (%s != %s), will import posts.xml" % (l.get_name(), record["version"], l.get_version())
+        if record["version"] != n.get_version():
+            print "Namespace %s outdated (%s != %s), will import posts.xml" % (n.get_name(), record["version"], n.get_version())
             version_outdated = True
     else:
-        print "Namespace %s is new, will import posts.xml" % l.get_name()
+        print "Namespace %s is new, will import posts.xml" % n.get_name()
         version_outdated = True
 
 
@@ -58,7 +58,7 @@ if version_outdated:
                         latest_imported_activity = last_activity_date
                     import_question(
                         posts,
-                        languages,
+                        namespaces,
                         int(attrs["Id"]),
                         attrs["Title"],
                         attrs["Body"],
@@ -73,11 +73,11 @@ if version_outdated:
     parser.setContentHandler(SOProcessor())
     parser.parse(open(sys.argv[1]))
 
-    # Set the version for all languages and last activity date
-    for l in languages:
-        language_records.update(
-            {"name": l.get_name()},
-            {"name": l.get_name(), "version": l.get_version()},
+    # Set the version for all namespaces and last activity date
+    for n in namespaces:
+        namespace_records.update(
+            {"name": n.get_name()},
+            {"name": n.get_name(), "version": n.get_version()},
             upsert=True
         )
     settings.update(
@@ -100,7 +100,7 @@ index = 0
 for q in rq:
     import_question(
         posts,
-        languages,
+        namespaces,
         int(q.id),
         q.title,
         q.body,
