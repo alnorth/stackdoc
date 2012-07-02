@@ -24,6 +24,12 @@ for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.languages.__path__
     languages.append(__import__("stackdoc.languages.%s" % modname, fromlist="dummy"))
 
 
+# Make sure the correct indexes are in place
+posts.ensure_index("question_id", unique=True)
+for l in languages:
+    posts.ensure_index("namespaces.%s" % l.get_name())
+
+
 # Check if any versions are different from the saved versions
 version_outdated = False
 for l in languages:
