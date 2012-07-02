@@ -10,7 +10,7 @@ function getCanonical() {
     // Remove the hostname and first part of the path.
     className = className.replace(/^.*\//, "");
     // Remove the aspx extension and optional bits on the end of the class name like "_events".
-    className = className.replace(/(_[a-z]+)?(\(v=vs\.\d+\))?\.aspx$/, "");
+    className = className.replace(/(_[a-z]+)?(\(v=vs\.\d+\))?(\(v=sql\.\d+\))?\.aspx$/, "");
 
     return className;
 }

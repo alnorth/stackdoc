@@ -8,12 +8,12 @@ def get_name():
     return "dotnet"
 
 def get_version():
-    return 1
+    return 2
 
 def get_ids(title, body, tags):
     ids = []
     if "http://msdn.microsoft.com/en-us/library/" in body:
-        matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", body)
+        matches = re.findall(r"http://msdn\.microsoft\.com/en\-us/library/([a-zA-Z0-9\.]+?)(_[a-z]+)?(\(v=vs\.\d+\))?(\(v=sql\.\d+\))?(\.aspx)?(?:$|[^a-zA-z0-9._])", body)
         for match_tuple in matches:
             match_id = match_tuple[0]
             ids.append(match_id)
