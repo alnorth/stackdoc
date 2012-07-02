@@ -27,5 +27,6 @@ stackdoc.fetchData("dotnet", getCanonical(), function(data, renderedList) {
         }).addClass("clickable");
     }
 
-    $sd.insertAfter($("#vsPanel"));
+    var after = $("#vsPanel").length > 0 ? $("#vsPanel") : $("#curversion");
+    $sd.insertAfter(after);
 });
