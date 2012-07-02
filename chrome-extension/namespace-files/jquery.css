@@ -5,11 +5,8 @@
     display: block;
 }
 
-#stackdoc-title.clickable {
-    cursor: pointer;
-}
-
-#stackdoc-title.clickable:hover {
+#stackdoc-title.clickable, #stackdoc-title.clickable:hover {
+    color: #0F67A1;
     cursor: pointer;
     text-decoration: underline;
 }

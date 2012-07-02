@@ -1,8 +1,8 @@
 
 var titleTemplate = '' +
-    '<a id="stackdoc-title">' +
+    '<div id="stackdoc-title">' +
     '   {{count}} Stack Overflow question{{^count_is_one}}s{{/count_is_one}}' +
-    '</a>';
+    '</div>';
 
 function getCanonical() {
     var c = $('link[rel="canonical"]').attr('href'),
