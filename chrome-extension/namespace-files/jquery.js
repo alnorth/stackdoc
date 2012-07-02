@@ -27,5 +27,5 @@ stackdoc.fetchData("jquery", getCanonical(), function(data, renderedList) {
         }).addClass("clickable");
     }
 
-    $(".entry-title .entry-meta").prepend($sd);
+    $(".entry-title").prepend($sd);
 });

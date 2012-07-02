@@ -1,8 +1,9 @@
 #stackdoc-title {
-    float: left;
-    margin-left: 0;
+    float: right;
     color: #222;
     display: block;
+    font-size: 12px;
+    margin: 5px;
 }
 
 #stackdoc-title.clickable, #stackdoc-title.clickable:hover {
