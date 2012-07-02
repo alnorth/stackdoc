@@ -20,6 +20,7 @@ table.stackdoc span.sd_score {
 
 table.stackdoc {
     font-size: 12px;
+    line-height: 15px;
 }
 
 table.stackdoc a, table.stackdoc a:visited, table.stackdoc a:hover {
