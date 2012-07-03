@@ -1,12 +1,12 @@
 
 def import_question(posts, namespaces, id, title, body, tags, last_activity_date, score, answer_count, has_accepted_answer):
     namespaces = {}
-    for n in namespaces:
+    for name, n in namespaces:
         if any(map(lambda x: x in tags, n.get_tags())):
             ids = n.get_ids(title, body, tags)
             if len(ids) > 0:
                 ids = map(lambda x: x.lower(), ids)
-                namespaces[n.get_name()] = ids
+                namespaces[name] = ids
 
     if len(namespaces):
         post = posts.find_one({"question_id": int(id)})

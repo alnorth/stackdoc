@@ -19,27 +19,27 @@ settings = db.settings
 
 
 # Load the list of namespaces
-namespaces = []
+namespaces = {}
 for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.namespaces.__path__):
-    namespaces.append(__import__("stackdoc.namespaces.%s" % modname, fromlist="dummy"))
+    namespaces[modname] = __import__("stackdoc.namespaces.%s" % modname, fromlist="dummy")
 
 
 # Make sure the correct indexes are in place
 posts.ensure_index("question_id", unique=True)
-for n in namespaces:
-    posts.ensure_index("namespaces.%s" % n.get_name())
+for name, n in namespaces:
+    posts.ensure_index("namespaces.%s" % name)
 
 
 # Check if any versions are different from the saved versions
 version_outdated = False
-for n in namespaces:
-    record = namespace_records.find_one({"name": n.get_name()})
+for name, n in namespaces:
+    record = namespace_records.find_one({"name": name})
     if record:
         if record["version"] != n.get_version():
-            print "Namespace %s outdated (%s != %s), will import posts.xml" % (n.get_name(), record["version"], n.get_version())
+            print "Namespace %s outdated (%s != %s), will import posts.xml" % (name, record["version"], n.get_version())
             version_outdated = True
     else:
-        print "Namespace %s is new, will import posts.xml" % n.get_name()
+        print "Namespace %s is new, will import posts.xml" % name
         version_outdated = True
 
 
@@ -74,10 +74,10 @@ if version_outdated:
     parser.parse(open(sys.argv[1]))
 
     # Set the version for all namespaces and last activity date
-    for n in namespaces:
+    for name, n in namespaces:
         namespace_records.update(
-            {"name": n.get_name()},
-            {"name": n.get_name(), "version": n.get_version()},
+            {"name": name},
+            {"name": name, "version": n.get_version()},
             upsert=True
         )
     settings.update(

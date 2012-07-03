@@ -4,9 +4,6 @@ import urllib
 
 ############### Functions called by stackdoc
 
-def get_name():
-    return "jquery"
-
 def get_version():
     return 1
 
