@@ -1,26 +1,26 @@
 table.stackdoc {
-	border-width: 0px;
+    border-width: 0px;
 }
 
 table.stackdoc td {
-	border-width: 0px;
-	vertical-align: top;
-	padding-bottom: 5px;
+    border-width: 0px;
+    vertical-align: top;
+    padding-bottom: 5px;
 }
 
 table.stackdoc span.sd_score {
-	padding-left: 3px;
-	padding-right: 3px;
-	margin-right: 2px;
-	border: 1px solid #a0a2a7;
-	float: left;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-right: 2px;
+    border: 1px solid #a0a2a7;
+    float: left;
 }
 
 table.stackdoc td.stackdoc-question-title {
-	padding-top: 2px;
-	padding-left: 4px;
+    padding-top: 2px;
+    padding-left: 4px;
 }
 
 table.stackdoc span.sd_score.sd_accepted {
-	border-color: green;
+    border-color: green;
 }
