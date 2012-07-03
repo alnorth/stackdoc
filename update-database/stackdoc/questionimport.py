@@ -1,14 +1,14 @@
 
 def import_question(posts, namespaces, id, title, body, tags, last_activity_date, score, answer_count, has_accepted_answer):
-    namespaces = {}
-    for name, n in namespaces:
+    namespaces_for_post = {}
+    for name, n in namespaces.items():
         if any(map(lambda x: x in tags, n.get_tags())):
             ids = n.get_ids(title, body, tags)
             if len(ids) > 0:
                 ids = map(lambda x: x.lower(), ids)
-                namespaces[name] = ids
+                namespaces_for_post[name] = ids
 
-    if len(namespaces):
+    if len(namespaces_for_post):
         post = posts.find_one({"question_id": int(id)})
         previously_existed = False
         update = True
@@ -22,7 +22,7 @@ def import_question(posts, namespaces, id, title, body, tags, last_activity_date
                 "url": "http://stackoverflow.com/questions/%s" % id
             }
 
-        post["namespaces"] = namespaces
+        post["namespaces"] = namespaces_for_post
         if update:
             post["title"] = title
             post["score"] = int(score)
@@ -36,4 +36,4 @@ def import_question(posts, namespaces, id, title, body, tags, last_activity_date
             posts.insert(post)
 
         update_text = "Fully updated" if update else "Partially updated"
-        print "%s %s question from %s (%s)" % (update_text if previously_existed else "Inserted", ", ".join(namespaces.keys()), str(last_activity_date), id)
+        print "%s %s question from %s (%s)" % (update_text if previously_existed else "Inserted", ", ".join(namespaces_for_post.keys()), str(last_activity_date), id)

@@ -26,13 +26,13 @@ for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.namespaces.__path_
 
 # Make sure the correct indexes are in place
 posts.ensure_index("question_id", unique=True)
-for name, n in namespaces:
+for name, n in namespaces.items():
     posts.ensure_index("namespaces.%s" % name)
 
 
 # Check if any versions are different from the saved versions
 version_outdated = False
-for name, n in namespaces:
+for name, n in namespaces.items():
     record = namespace_records.find_one({"name": name})
     if record:
         if record["version"] != n.get_version():
@@ -74,7 +74,7 @@ if version_outdated:
     parser.parse(open(sys.argv[1]))
 
     # Set the version for all namespaces and last activity date
-    for name, n in namespaces:
+    for name, n in namespaces.items():
         namespace_records.update(
             {"name": name},
             {"name": name, "version": n.get_version()},
