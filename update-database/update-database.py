@@ -95,7 +95,7 @@ so.impose_throttling = True
 latest_activity_date = settings.find_one({"key": "latest_activity_date"})["value"]
 latest_activity_date_as_unix = int(time.mktime(latest_activity_date.timetuple()))
 print "Fetching questions active after %s" % str(latest_activity_date)
-rq = so.recent_questions(min=latest_activity_date_as_unix, order="asc")
+rq = so.recent_questions(min=latest_activity_date_as_unix, order="asc", answers="false", pagesize=100)
 index = 0
 for q in rq:
     import_question(
