@@ -13,7 +13,30 @@ var namespaceIdMappings = {
         callback(canonical);
     },
     dotnet: function(canonical, callback) {
-        callback(canonical);
+        // If this is a short ID then we look it up using MSDN IDs (http://msdnid.alnorth.com).
+        if(/^[a-zA-Z0-9]{8}$/.test(canonical)) {
+            http.get({"host": "msdnid.alnorth.com", port: 80, path: "/" + canonical}, function(res) {
+                if(res.statusCode == 200) {
+                    var body = "";
+
+                    res.on("data", function (chunk) {
+                        body += chunk;
+                    });
+                    res.on("end", function (chunk) {
+                        callback(body);
+                    });
+                } else {
+                    // Probably a 404, meaning that MSDN IDs can't do any better than what we've got
+                    callback(canonical);
+                }
+            }).on("error", function(e) {
+                // Error accessing MSDN IDs, use what we've got
+                callback(canonical);
+            });
+        } else {
+            // Not a short ID, so just use this
+            callback(canonical);
+        }
     }
 }
 
