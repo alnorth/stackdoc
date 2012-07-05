@@ -8,6 +8,15 @@ var db = new Db("stackdoc", server);
 
 var port = process.argv[2] || 8000;
 
+var namespaceIdMappings = {
+    default: function(canonical, callback) {
+        callback(canonical);
+    },
+    dotnet: function(canonical, callback) {
+        callback(canonical);
+    }
+}
+
 function postListToArray(matchingPosts) {
     var a = [],
         i = 0;
@@ -35,22 +44,25 @@ db.open(function(err, db) {
 
             if(matches) {
                 var namespace = matches[1],
-                    canonical = matches[2];
+                    canonical = matches[2],
+                    mappingFn = namespaceIdMappings[namespace] || namespaceIdMappings.default;
 
-                db.collection("posts", function(err, posts) {
-                    if(!err) {
-                        var query = {};
-                        query["namespaces." + namespace] = canonical.toLowerCase();
-                        posts.find(query).toArray(function(err, matchingPosts) {
-                            var array = postListToArray(matchingPosts);
-                            res.writeHead(200, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
-                            res.end(JSON.stringify(array));
-                        });
-                    } else {
-                        console.log("MongoDB error", err);
-                        res.writeHead(500, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
-                        res.end("Request error");
-                    }
+                mappingFn(canonical, function(mappedCanonical) {
+                    db.collection("posts", function(err, posts) {
+                        if(!err) {
+                            var query = {};
+                            query["namespaces." + namespace] = mappedCanonical.toLowerCase();
+                            posts.find(query).toArray(function(err, matchingPosts) {
+                                var array = postListToArray(matchingPosts);
+                                res.writeHead(200, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
+                                res.end(JSON.stringify(array));
+                            });
+                        } else {
+                            console.log("MongoDB error", err);
+                            res.writeHead(500, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
+                            res.end("Request error");
+                        }
+                    });
                 });
             } else {
                 res.writeHead(404, {"Content-Type": "text/javascript", "Access-Control-Allow-Origin": "*"});
