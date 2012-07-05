@@ -97,6 +97,7 @@ latest_activity_date_as_unix = int(time.mktime(latest_activity_date.timetuple())
 print "Fetching questions active after %s" % str(latest_activity_date)
 rq = so.recent_questions(min=latest_activity_date_as_unix, order="asc", answers="false", pagesize=100)
 index = 0
+requests_left_current = 0
 for q in rq:
     import_question(
         posts,
@@ -120,3 +121,8 @@ for q in rq:
             upsert=True
         )
 
+    # Monitor our request allowance. Pause if we're running out
+    if (requests_left_current != so.requests_left) and so.requests_left < 100:
+        print "%s requests left, pausing" % so.requests_left
+        requests_left_current = so.requests_left
+        time.sleep(60)
