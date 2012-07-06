@@ -1,6 +1,11 @@
 #stackdoc-title {
     color: #5D5D5D;
+    display: inline-block;
+}
+
+.cl_lw_vs_seperator + #stackdoc-title {
     margin-left: 13px;
+    display: block;
 }
 
 #stackdoc-title.clickable {

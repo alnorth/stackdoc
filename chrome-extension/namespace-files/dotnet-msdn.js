@@ -28,5 +28,10 @@ stackdoc.fetchData("dotnet", getCanonical(), function(data, renderedList) {
     }
 
     var after = $("#vsPanel").length > 0 ? $("#vsPanel") : $("#curversion");
-    $sd.insertAfter(after);
+    if(after.length > 0) {
+        $sd.insertAfter(after);
+    } else {
+        // When those two elements aren't visible we insert the title on a line of its own.
+        $sdTitle.insertAfter($("h1.title"));
+    }
 });
