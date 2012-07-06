@@ -10,7 +10,11 @@ def get_version():
 def get_ids(title, body, tags):
     ids = []
     if "http://docs.python.org/" in body:
-        pass
+        urls = re.findall(r'<a href="([^"]+)"', body)
+        for url in urls:
+            m = re.match("http://docs.python.org/(?:release/)?(?:dev/)?(?:[0-9](?:\.[0-9]/)+)?(?:py3k/)?library/([.a-z0-9]+)(?:-examples)?\.html", url)
+            if m:
+                ids.append(m.group(1))
     return ids
 
 def get_tags():

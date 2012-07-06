@@ -14,7 +14,7 @@ else:
                 if attrs["PostTypeId"] == "1":
                     body = attrs["Body"]
                     if start_with in body:
-                        matches =  re.findall(r'<a href="([^"]+)"', body)
+                        matches = re.findall(r'<a href="([^"]+)"', body)
                         for url in filter(lambda x: x.startswith(start_with), matches):
                             print url
 
