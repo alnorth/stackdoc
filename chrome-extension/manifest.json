@@ -23,6 +23,11 @@
             "matches": ["http://api.jquery.com/*"],
             "css": ["namespace-files/jquery.css"],
             "js": ["namespace-files/jquery.js"]
+        },
+        {
+            "matches": ["http://docs.python.org/*"],
+            "css": ["namespace-files/python.css"],
+            "js": ["namespace-files/python.js"]
         }
       ],
     "permissions": [

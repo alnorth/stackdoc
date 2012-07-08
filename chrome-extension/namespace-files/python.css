@@ -1,0 +1,17 @@
+
+#stackdoc-title {
+    display: inline-block;
+}
+
+#stackdoc-title.clickable {
+    color: #355F7C;
+    cursor: pointer;
+}
+
+#stackdoc-title.clickable:hover {
+    text-decoration: underline;
+}
+
+table.stackdoc {
+    font-size: 90%;
+}
