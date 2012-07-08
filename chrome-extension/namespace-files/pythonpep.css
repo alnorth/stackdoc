@@ -1,0 +1,24 @@
+
+#stackdoc-title {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#stackdoc-title.clickable {
+    color: #00A;
+    cursor: pointer;
+    border-bottom: 1px dashed #CCC;
+}
+
+table.stackdoc {
+    font-size: 90%;
+}
+
+table.stackdoc a {
+    color: #00A;
+    cursor: pointer;
+    border-bottom: 1px dashed #CCC;
+    text-decoration: none;
+}

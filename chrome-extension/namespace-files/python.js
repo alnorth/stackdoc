@@ -26,4 +26,4 @@ $(".body > .section").each(function() {
 
         $sd.insertAfter($this.children("h1"));
     });
-})
+});

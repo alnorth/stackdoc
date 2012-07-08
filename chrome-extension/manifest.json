@@ -28,6 +28,11 @@
             "matches": ["http://docs.python.org/*"],
             "css": ["namespace-files/python.css"],
             "js": ["namespace-files/python.js"]
+        },
+        {
+            "matches": ["http://www.python.org/dev/peps/*"],
+            "css": ["namespace-files/pythonpep.css"],
+            "js": ["namespace-files/pythonpep.js"]
         }
       ],
     "permissions": [
