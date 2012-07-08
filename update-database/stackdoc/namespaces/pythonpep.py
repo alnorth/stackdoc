@@ -9,7 +9,7 @@ def get_version():
 
 def get_ids(title, body, tags):
     ids = []
-    if "http://www.python.org/" in body:
+    if "http://www.python.org/dev/peps/pep-" in body:
         urls = re.findall(r'<a href="([^"]+)"', body)
         for url in urls:
             m = re.match("http:\/\/www\.python\.org\/dev\/peps\/pep\-([0-9]+)", url)
