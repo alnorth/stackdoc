@@ -1,9 +1,7 @@
-
 #stackdoc-title {
     display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
+    float: right;
+    margin-top: -1.5em;
 }
 
 #stackdoc-title.clickable {

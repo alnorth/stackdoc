@@ -20,7 +20,5 @@ stackdoc.fetchData("pythonpep", getPepNo(), function(data, renderedList) {
         }).addClass("clickable");
     }
 
-    $("#contents").prepend($sd);
+    $sd.insertAfter($("#content table.rfc2822"));
 });
-
-console.log(getPepNo());
