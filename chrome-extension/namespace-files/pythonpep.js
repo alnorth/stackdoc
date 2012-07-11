@@ -5,7 +5,8 @@ var titleTemplate = '' +
     '</div>';
 
 function getPepNo() {
-    return document.location.pathname.match(/[0-9]+/)[0];
+    var matches = document.location.pathname.match(/[0-9]+/);
+    if(matches) return [0];
 }
 
 stackdoc.fetchData("pythonpep", getPepNo(), function(data, renderedList) {

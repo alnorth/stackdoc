@@ -2,13 +2,16 @@
 var titleTemplate = '' +
     '<div id="stackdoc-title">' +
     '   {{count}} Stack Overflow question{{^count_is_one}}s{{/count_is_one}}' +
-    '</div>';
+    '</div>',
+    sections = $(".body > .section");
 
-$(".body > .section").each(function() {
-    var id = this.id.replace("module-", ""),
-        $this = $(this);
+if(sections.length > 0) {
+    var section = sections[0],
+        id = null;
 
-    if(id === "built-in-functions") {
+    if(section.id.indexOf("module-") === 0) {
+        id = section.id.replace("module-", "");
+    } else if(section.id === "built-in-functions") {
         id = "functions";
     }
 
@@ -24,6 +27,6 @@ $(".body > .section").each(function() {
             }).addClass("clickable");
         }
 
-        $sd.insertAfter($this.children("h1"));
+        $sd.insertAfter($(section).children("h1"));
     });
-});
+}
