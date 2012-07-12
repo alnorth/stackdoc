@@ -12,7 +12,7 @@ def get_ids(title, body, tags):
     if "http://java.sun.com/" in body or "http://docs.oracle.com/":
         urls = re.findall(r'<a href="([^"]+)"', body)
         for url in urls:
-            m = re.match("http://(?:java\.sun|docs\.oracle)\.com/(?:javase|j2se)/\d(?:\.\d)*/docs/api/(\w+(?:/\w+)*)\.html", url)
+            m = re.match("http://(?:java\.sun|docs\.oracle)\.com/(?:javase|j2se|javaee|j2ee)/\d(?:\.\d)*/docs/api/(\w+(?:/\w+)*)\.html", url)
             if m:
                 ids.append(m.group(1).replace("/", "."))
 
@@ -20,5 +20,6 @@ def get_ids(title, body, tags):
 
 def get_tags():
     return [
-        "java"
+        "java",
+        "java-ee"
     ]
