@@ -12,9 +12,12 @@ def get_ids(title, body, tags):
     if "http://support.microsoft.com/":
         urls = re.findall(r'<a href="([^"]+)"', body)
         for url in urls:
-            m = re.match("http://support\.microsoft\.com/(?:default.aspx/)?kb/(\w+)", url)
+            m = re.match("http://support\.microsoft\.com/(?:default\.aspx/)?[kK][bB]/(\w+)", url)
             if m:
                 ids.append(m.group(1))
+            m2 = re.match("http://support\.microsoft\.com/(?:default\.aspx)?\?scid=[kK][bB];[-\w]+;(\w+)", url)
+            if m2:
+                ids.append(m2.group(1))
 
     return ids
 
