@@ -33,6 +33,11 @@
             "matches": ["http://www.python.org/dev/peps/*"],
             "css": ["namespace-files/pythonpep.css"],
             "js": ["namespace-files/pythonpep.js"]
+        },
+        {
+            "matches": ["http://docs.oracle.com/javase/*"],
+            "css": ["namespace-files/java.css"],
+            "js": ["namespace-files/java.js"]
         }
       ],
     "permissions": [

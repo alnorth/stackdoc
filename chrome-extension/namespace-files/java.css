@@ -1,0 +1,9 @@
+#stackdoc-title {
+    float: right;
+}
+
+#stackdoc-title.clickable {
+    color: -webkit-link;
+    cursor: pointer;
+    text-decoration: underline;
+}
