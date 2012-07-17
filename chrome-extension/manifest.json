@@ -38,6 +38,11 @@
             "matches": ["http://docs.oracle.com/javase/*"],
             "css": ["namespace-files/java.css"],
             "js": ["namespace-files/java.js"]
+        },
+        {
+            "matches": ["http://support.microsoft.com/kb/*"],
+            "css": ["namespace-files/microsoftkb.css"],
+            "js": ["namespace-files/microsoftkb.js"]
         }
       ],
     "permissions": [
