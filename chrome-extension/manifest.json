@@ -5,7 +5,14 @@
     "description": "Adds Stackoverflow question lists to online documentation.",
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
+            "matches": [
+                "http://msdn.microsoft.com/*",
+                "http://api.jquery.com/*",
+                "http://docs.python.org/*",
+                "http://www.python.org/dev/peps/*",
+                "http://docs.oracle.com/javase/*",
+                "http://support.microsoft.com/kb/*"
+            ],
             "css": ["lib/popover.css", "main.css"],
             "js": [
                 "lib/jquery-1.7.2.min.js",
@@ -44,9 +51,10 @@
             "css": ["namespace-files/microsoftkb.css"],
             "js": ["namespace-files/microsoftkb.js"]
         }
-      ],
+    ],
     "permissions": [
-        "http://msdn.microsoft.com/*"
+        "http://*/*",
+        "https://*/*"
     ],
     "icons": {
         "16": "icons/icon-16.png",
