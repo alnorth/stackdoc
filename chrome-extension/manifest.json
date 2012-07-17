@@ -1,6 +1,6 @@
 {
     "name": "StackDoc",
-    "version": "0.3",
+    "version": "0.4",
     "manifest_version": 2,
     "description": "Adds Stackoverflow question lists to online documentation.",
     "content_scripts": [
