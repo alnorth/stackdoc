@@ -43,6 +43,13 @@ You can set up an equivalent environment with this code:
 That last line will start parsing the `posts.xml` file. Feel free to stop it with Ctrl + C at any point.
 
 
+### Installing a test version of the Chrome extension ###
+
+Go to [chrome://extensions](chrome://extensions) and switch on "Developer mode" (top right). Now click on "Load unpacked extension..." and select the chrome-extension directory. Every time you make changes to the extension files you'll need to come to this page and click on "Reload".
+
+While you're here you might want to disable the official version of the extension so you don't have both running at the same time.
+
+
 ## License ##
 
 Unless otherwise stated in comments, files included in this project are provided under the Modified BSD License as described in LICENSE.txt.
