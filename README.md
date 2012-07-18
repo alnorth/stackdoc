@@ -1,5 +1,7 @@
 # StackDoc #
 
+**Note: These instructions are currently incomplete, check back later for full details**
+
 StackDoc is a Chrome extension that inserts lists of Stack Overflow questions into online documentation. It's [available in the Chrome webstore](https://chrome.google.com/webstore/detail/hfdanbnpljnbncjbdcbmbieeoicdlhbe) if you would simply like to use it. The rest of this document is aimed at those that would like to extend it.
 
 StackDoc currently supports a handful of different online documentation websites. These are the main ones that I use day to day, that's why I added them first. If you'd like your favourite language or library to be included then your best bet is to add support for it yourself. I've tried to make this as simple as possible.
@@ -22,7 +24,7 @@ In order to add support for an extra language you will need to extend the databa
 
 The big thing that you'll need before you can start work is a copy of a Stack Overflow data dump. These dumps are currently available as [torrents from ClearBits](http://www.clearbits.net/creators/146-stack-exchange-data-dump). They are quite large. Once you've downloaded this you need to decompress a copy of the `posts.xml` file from the Stack Overflow data. You can throw everything else away.
 
-For working with the database update script you'll need **Python** and **virtualenv** installed. For the Chrome extension you'll need *Chrome/Chromium*, but if you're interested in this extension you've probably got this already.
+For working with the database update script you'll need **Python** and **virtualenv** installed. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
 
 And, of course, you'll need a clone of the StackDoc repository.
 
