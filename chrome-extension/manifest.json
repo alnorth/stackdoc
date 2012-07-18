@@ -7,11 +7,11 @@
         {
             "matches": [
                 "http://msdn.microsoft.com/*",
-                "http://api.jquery.com/*",
-                "http://docs.python.org/*",
-                "http://www.python.org/dev/peps/*",
                 "http://docs.oracle.com/javase/*",
-                "http://support.microsoft.com/kb/*"
+                "http://api.jquery.com/*",
+                "http://support.microsoft.com/kb/*",
+                "http://docs.python.org/*",
+                "http://www.python.org/dev/peps/*"
             ],
             "css": ["lib/popover.css", "main.css"],
             "js": [
@@ -27,9 +27,19 @@
             "js": ["namespace-files/dotnet-msdn.js"]
         },
         {
+            "matches": ["http://docs.oracle.com/javase/*"],
+            "css": ["namespace-files/java.css"],
+            "js": ["namespace-files/java.js"]
+        },
+        {
             "matches": ["http://api.jquery.com/*"],
             "css": ["namespace-files/jquery.css"],
             "js": ["namespace-files/jquery.js"]
+        },
+        {
+            "matches": ["http://support.microsoft.com/kb/*"],
+            "css": ["namespace-files/microsoftkb.css"],
+            "js": ["namespace-files/microsoftkb.js"]
         },
         {
             "matches": ["http://docs.python.org/*"],
@@ -40,16 +50,6 @@
             "matches": ["http://www.python.org/dev/peps/*"],
             "css": ["namespace-files/pythonpep.css"],
             "js": ["namespace-files/pythonpep.js"]
-        },
-        {
-            "matches": ["http://docs.oracle.com/javase/*"],
-            "css": ["namespace-files/java.css"],
-            "js": ["namespace-files/java.js"]
-        },
-        {
-            "matches": ["http://support.microsoft.com/kb/*"],
-            "css": ["namespace-files/microsoftkb.css"],
-            "js": ["namespace-files/microsoftkb.js"]
         }
     ],
     "permissions": [
