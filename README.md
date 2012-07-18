@@ -29,6 +29,20 @@ For working with the database update script you'll need **Python** and **virtual
 And, of course, you'll need a clone of the StackDoc repository.
 
 
+### Running the database update script ###
+
+In the update-database directory you'll find a script called `update-database.sh`. This is the actual script that gets run on the server. As you can see, all it does is create a virtual environment, install the required libraries and run the python script `update-database.py`. It also cleans up the virtual environment once it's done. You could run this script every time you want to update the database but you'll probably get irritated with how long it takes to install the libraries.
+
+You can set up an equivalent environment with this code:
+
+    cd update-database
+    virtualenv venv
+    venv/bin/pip install -r requirements.txt
+    venv/bin/python update-database.py ~/path/to/posts.xml
+
+That last line will start parsing the `posts.xml` file. Feel free to stop it with Ctrl + C at any point.
+
+
 ## License ##
 
 Unless otherwise stated in comments, files included in this project are provided under the Modified BSD License as described in LICENSE.txt.
