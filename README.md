@@ -1,7 +1,5 @@
 # StackDoc #
 
-**Note: These instructions are currently incomplete, check back later for full details**
-
 StackDoc is a Chrome extension that inserts lists of Stack Overflow questions into online documentation. It's [available in the Chrome webstore](https://chrome.google.com/webstore/detail/hfdanbnpljnbncjbdcbmbieeoicdlhbe) if you would simply like to use it. The rest of this document is aimed at those that would like to extend it.
 
 StackDoc currently supports a handful of different online documentation websites. These are the main ones that I use day to day, that's why I added them first. If you'd like your favourite language or library to be included then your best bet is to add support for it yourself. I've tried to make this as simple as possible.
