@@ -11,6 +11,11 @@ var stackdoc = (function() {
         '{{/questions}}' +
         '</table>';
 
+    var titleTemplate = '' +
+        '<div id="stackdoc-title">' +
+        '   {{count}} Stack Overflow question{{^count_is_one}}s{{/count_is_one}}' +
+        '</div>';
+
     function url(namespace, id) {
         return "http://stackdocapi.alnorth.com/1/" + encodeURIComponent(namespace) + "/" + encodeURIComponent(id);
     }
@@ -23,9 +28,18 @@ var stackdoc = (function() {
         if(id) {
             $.getJSON(url(namespace, id), function(data) {
                 data.sort(compareQuestions);
-                var renderedList = Mustache.render(sdTemplate, {questions: data});
+                var renderedList = Mustache.render(sdTemplate, {questions: data}),
+                    titleText = Mustache.render(titleTemplate, {count: data.length, count_is_one: data.length === 1}),
+                    $sd = $(titleText);
 
-                callback(data, renderedList);
+                if(data.length > 0) {
+                    $sd.popover({
+                        content: renderedList,
+                        classes: "large"
+                    }).addClass("clickable");
+                }
+
+                callback($sd);
             });
         }
     }
