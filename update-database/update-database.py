@@ -13,6 +13,7 @@ import stackdoc.namespaces
 # Set up the database connection
 connection = Connection()
 db = connection.stackdoc
+stackdb = connection.stackdb
 posts = db.posts
 namespace_records = db.namespaces
 settings = db.settings
@@ -36,42 +37,31 @@ for name, n in namespaces.items():
     record = namespace_records.find_one({"name": name})
     if record:
         if record["version"] != n.get_version():
-            print "Namespace %s outdated (%s != %s), will import posts.xml" % (name, record["version"], n.get_version())
+            print "Namespace %s outdated (%s != %s), will import whole collection" % (name, record["version"], n.get_version())
             version_outdated = True
     else:
-        print "Namespace %s is new, will import posts.xml" % name
+        print "Namespace %s is new, will import whole collection" % name
         version_outdated = True
 
 
-# If so then process the posts.xml file
+# If so then process the whole collection
 if version_outdated:
-    latest_imported_activity = None
-    class SOProcessor(handler.ContentHandler):
+    tmp_posts = db.tmp_posts
+    tmp_posts.drop()
 
-        def startElement(self, name, attrs):
-            if name == "row":
-                if attrs["PostTypeId"] == "1":
-                    global latest_imported_activity
-                    global posts
-                    last_activity_date = dateutil.parser.parse(attrs["LastActivityDate"])
-                    if not latest_imported_activity or latest_imported_activity < last_activity_date:
-                        latest_imported_activity = last_activity_date
-                    import_question(
-                        posts,
-                        namespaces,
-                        int(attrs["Id"]),
-                        attrs["Title"],
-                        attrs["Body"],
-                        attrs["Tags"].lstrip("<").rstrip(">").split("><"),
-                        last_activity_date,
-                        int(attrs["Score"]),
-                        int(attrs["AnswerCount"]) if "AnswerCount" in attrs else 0,
-                        "AcceptedAnswerId" in attrs
-                    )
-
-    parser = make_parser()
-    parser.setContentHandler(SOProcessor())
-    parser.parse(open(sys.argv[1]))
+    for q in stackdb.questions.find():
+        import_question(
+            tmp_posts,
+            namespaces,
+            q["question_id"],
+            q["title"],
+            q["body"],
+            q["tags"],
+            q["last_activity_date"],
+            q["score"],
+            len(q["answers"]),
+            q["accepted_answer_id"] > 0
+        )
 
     # Set the version for all namespaces and last activity date
     for name, n in namespaces.items():
@@ -80,11 +70,7 @@ if version_outdated:
             {"name": name, "version": n.get_version()},
             upsert=True
         )
-    settings.update(
-        {"key": "latest_activity_date"},
-        {"key": "latest_activity_date", "value": latest_imported_activity},
-        upsert=True
-    )
+
 
 
 # Load SO questions from the earliest last activity date
