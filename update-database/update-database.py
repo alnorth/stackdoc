@@ -34,11 +34,12 @@ for name, n in namespaces.items():
         print "Namespace %s is new, will import whole collection" % name
         version_outdated = True
 
-def import_all_questions(collection, namespaces, questions):
+def import_all_questions(collection, namespaces, questions, upsert):
     for q in stackdb.questions.find():
         import_question(
             collection,
             namespaces,
+            upsert,
             q["question_id"],
             q["title"],
             q["body"],
@@ -56,7 +57,7 @@ if version_outdated:
     tmp_posts = db.tmp_posts
     tmp_posts.drop()
 
-    import_all_questions(tmp_posts, namespaces, stackdb.questions.find())
+    import_all_questions(tmp_posts, namespaces, stackdb.questions.find(), False)
 
     # Set the version for all namespaces and last activity date
     for name, n in namespaces.items():
@@ -82,4 +83,4 @@ else:
     last_updated_date = latest_updated_question["last_updated"]
 
     print "Processing questions updated after %s" % str(last_updated_date)
-    import_all_questions(tmp_posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}))
+    import_all_questions(tmp_posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}), True)
