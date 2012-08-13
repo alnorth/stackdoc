@@ -1,5 +1,5 @@
 
-def import_question(posts, namespaces, id, title, body, tags, last_activity_date, score, answer_count, has_accepted_answer):
+def import_question(posts, namespaces, id, title, body, tags, last_activity_date, last_updated_date, score, answer_count, has_accepted_answer):
     namespaces_for_post = {}
     for name, n in namespaces.items():
         namespace_tags = n.get_tags()
@@ -30,6 +30,7 @@ def import_question(posts, namespaces, id, title, body, tags, last_activity_date
             post["answers"] = int(answer_count)
             post["accepted_answer"] = has_accepted_answer
             post["last_activity"] = last_activity_date
+            post["last_updated"] = last_updated_date
 
         if previously_existed:
             posts.update({"question_id": int(id)}, post)
