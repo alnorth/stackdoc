@@ -1,7 +1,5 @@
-import dateutil.parser
 import pkgutil
 from pymongo import Connection
-import stackexchange
 import sys
 import time
 from xml.sax import make_parser, handler
@@ -13,9 +11,9 @@ import stackdoc.namespaces
 # Set up the database connection
 connection = Connection()
 db = connection.stackdoc
+stackdb = connection.stackdb
 posts = db.posts
 namespace_records = db.namespaces
-settings = db.settings
 
 
 # Load the list of namespaces
@@ -24,105 +22,66 @@ for importer, modname, ispkg in pkgutil.iter_modules(stackdoc.namespaces.__path_
     namespaces[modname] = __import__("stackdoc.namespaces.%s" % modname, fromlist="dummy")
 
 
-# Make sure the correct indexes are in place
-posts.ensure_index("question_id", unique=True)
-for name, n in namespaces.items():
-    posts.ensure_index("namespaces.%s" % name)
-
-
 # Check if any versions are different from the saved versions
 version_outdated = False
 for name, n in namespaces.items():
     record = namespace_records.find_one({"name": name})
     if record:
         if record["version"] != n.get_version():
-            print "Namespace %s outdated (%s != %s), will import posts.xml" % (name, record["version"], n.get_version())
+            print "Namespace %s outdated (%s != %s), will import whole collection" % (name, record["version"], n.get_version())
             version_outdated = True
     else:
-        print "Namespace %s is new, will import posts.xml" % name
+        print "Namespace %s is new, will import whole collection" % name
         version_outdated = True
 
+def import_all_questions(collection, namespaces, questions, upsert):
+    for q in stackdb.questions.find():
+        import_question(
+            collection,
+            namespaces,
+            upsert,
+            q["question_id"],
+            q["title"],
+            q["body"],
+            q["tags"],
+            q["last_activity_date"],
+            q["last_updated_date"],
+            q["score"],
+            q["answers"],
+            "accepted_answer_id" in q and q["accepted_answer_id"] > 0
+        )
 
-# If so then process the posts.xml file
+
+# If so then process the whole collection
 if version_outdated:
-    latest_imported_activity = None
-    class SOProcessor(handler.ContentHandler):
+    tmp_posts = db.tmp_posts
+    tmp_posts.drop()
 
-        def startElement(self, name, attrs):
-            if name == "row":
-                if attrs["PostTypeId"] == "1":
-                    global latest_imported_activity
-                    global posts
-                    last_activity_date = dateutil.parser.parse(attrs["LastActivityDate"])
-                    if not latest_imported_activity or latest_imported_activity < last_activity_date:
-                        latest_imported_activity = last_activity_date
-                    import_question(
-                        posts,
-                        namespaces,
-                        int(attrs["Id"]),
-                        attrs["Title"],
-                        attrs["Body"],
-                        attrs["Tags"].lstrip("<").rstrip(">").split("><"),
-                        last_activity_date,
-                        int(attrs["Score"]),
-                        int(attrs["AnswerCount"]) if "AnswerCount" in attrs else 0,
-                        "AcceptedAnswerId" in attrs
-                    )
+    # We don't care about ordering here because we're updating the whole collection in one go
+    import_all_questions(tmp_posts, namespaces, stackdb.questions.find(), False)
 
-    parser = make_parser()
-    parser.setContentHandler(SOProcessor())
-    parser.parse(open(sys.argv[1]))
+    # Make sure the correct indexes are in place
+    tmp_posts.ensure_index("question_id", unique=True)
+    tmp_posts.ensure_index("last_updated")
+    for name, n in namespaces.items():
+        tmp_posts.ensure_index("namespaces.%s" % name)
 
-    # Set the version for all namespaces and last activity date
+    posts.drop()
+    tmp_posts.rename("posts")
+    posts = db.posts
+
+    # Set the version for all namespaces
     for name, n in namespaces.items():
         namespace_records.update(
             {"name": name},
             {"name": name, "version": n.get_version()},
             upsert=True
         )
-    settings.update(
-        {"key": "latest_activity_date"},
-        {"key": "latest_activity_date", "value": latest_imported_activity},
-        upsert=True
-    )
 
+else:
+    # We've previously imported most of the questions, we now just need to catch up with what's changed since.
+    latest_updated_question = posts.find_one(sort=[("last_updated", pymongo.DESCENDING)])
+    last_updated_date = latest_updated_question["last_updated"]
 
-# Load SO questions from the earliest last activity date
-so = stackexchange.Site(stackexchange.StackOverflow)
-so.be_inclusive()
-so.impose_throttling = True
-
-latest_activity_date = settings.find_one({"key": "latest_activity_date"})["value"]
-latest_activity_date_as_unix = int(time.mktime(latest_activity_date.timetuple()))
-print "Fetching questions active after %s" % str(latest_activity_date)
-rq = so.recent_questions(min=latest_activity_date_as_unix, order="asc", answers="false", pagesize=100)
-index = 0
-requests_left_current = 0
-for q in rq:
-    import_question(
-        posts,
-        namespaces,
-        int(q.id),
-        q.title,
-        q.body,
-        q.tags,
-        q.last_activity_date,
-        int(q.score),
-        int(q.answer_count),
-        hasattr(q, "accepted_answer_id")
-    )
-
-    # Every 20 questions set the last activity date
-    index += 1
-    if index % 20 == 0:
-        settings.update(
-            {"key": "latest_activity_date"},
-            {"key": "latest_activity_date", "value": q.last_activity_date},
-            upsert=True
-        )
-
-    # Monitor our request allowance. Pause if we're running out
-    if (requests_left_current != so.requests_left) and so.requests_left < 100:
-        print "%s requests left, pausing" % so.requests_left
-        requests_left_current = so.requests_left
-        time.sleep(60)
+    print "Processing questions updated after %s" % str(last_updated_date)
+    import_all_questions(posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}), True)
