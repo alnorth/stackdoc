@@ -59,23 +59,23 @@ if version_outdated:
 
     import_all_questions(tmp_posts, namespaces, stackdb.questions.find(), False)
 
-    # Set the version for all namespaces and last activity date
+    # Make sure the correct indexes are in place
+    tmp_posts.ensure_index("question_id", unique=True)
+    tmp_posts.ensure_index("last_updated")
+    for name, n in namespaces.items():
+        tmp_posts.ensure_index("namespaces.%s" % name)
+
+    posts.drop()
+    tmp_posts.rename("posts")
+    posts = db.posts
+
+    # Set the version for all namespaces
     for name, n in namespaces.items():
         namespace_records.update(
             {"name": name},
             {"name": name, "version": n.get_version()},
             upsert=True
         )
-
-    posts.drop()
-    tmp_posts.rename("posts")
-    posts = db.posts
-
-    # Make sure the correct indexes are in place
-    posts.ensure_index("question_id", unique=True)
-    posts.ensure_index("last_updated")
-    for name, n in namespaces.items():
-        posts.ensure_index("namespaces.%s" % name)
 
 else:
     # We've previously imported most of the questions, we now just need to catch up with what's changed since.
