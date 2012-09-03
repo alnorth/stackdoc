@@ -1,10 +1,12 @@
 
-def import_question(posts, namespaces, upsert, id, title, body, tags, last_activity_date, last_updated_date, score, answer_count, has_accepted_answer):
+def import_question(posts, namespaces, upsert, id, title, body, tags, last_activity_date, last_updated_date, score, answers, has_accepted_answer):
     namespaces_for_post = {}
     for name, n in namespaces.items():
         namespace_tags = n.get_tags()
         if not(namespace_tags) or any(map(lambda x: x in tags, namespace_tags)):
             ids = n.get_ids(title, body, tags)
+            for a in answers:
+                ids = list(set(ids) | set(n.get_ids(title, a["body"], tags)))
             if len(ids) > 0:
                 ids = map(lambda x: x.lower(), ids)
                 namespaces_for_post[name] = ids

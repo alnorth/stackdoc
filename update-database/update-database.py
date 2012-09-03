@@ -47,7 +47,7 @@ def import_all_questions(collection, namespaces, questions, upsert):
             q["last_activity_date"],
             q["last_updated_date"],
             q["score"],
-            len(q["answers"]),
+            q["answers"],
             "accepted_answer_id" in q and q["accepted_answer_id"] > 0
         )
 
