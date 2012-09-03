@@ -18,6 +18,7 @@ def import_question(posts, namespaces, upsert, id, title, body, tags, last_activ
             "namespaces": namespaces_for_post,
             "title": title,
             "score": int(score),
+            "answers": len(answers),
             "accepted_answer": has_accepted_answer,
             "last_activity": last_activity_date,
             "last_updated": last_updated_date
