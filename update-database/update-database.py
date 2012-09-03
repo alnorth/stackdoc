@@ -48,7 +48,7 @@ def import_all_questions(collection, namespaces, questions, upsert):
             q["last_updated_date"],
             q["score"],
             len(q["answers"]),
-            q["accepted_answer_id"] > 0
+            "accepted_answer_id" in q and q["accepted_answer_id"] > 0
         )
 
 
@@ -83,4 +83,4 @@ else:
     last_updated_date = latest_updated_question["last_updated"]
 
     print "Processing questions updated after %s" % str(last_updated_date)
-    import_all_questions(tmp_posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}), True)
+    import_all_questions(posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}), True)
