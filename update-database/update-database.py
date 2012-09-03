@@ -57,6 +57,7 @@ if version_outdated:
     tmp_posts = db.tmp_posts
     tmp_posts.drop()
 
+    # We don't care about ordering here because we're updating the whole collection in one go
     import_all_questions(tmp_posts, namespaces, stackdb.questions.find(), False)
 
     # Make sure the correct indexes are in place
