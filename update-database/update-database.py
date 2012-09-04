@@ -35,7 +35,7 @@ for name, n in namespaces.items():
         version_outdated = True
 
 def import_all_questions(collection, namespaces, questions, upsert):
-    for q in stackdb.questions.find():
+    for q in questions:
         import_question(
             collection,
             namespaces,
@@ -83,5 +83,8 @@ else:
     latest_updated_question = posts.find_one(sort=[("last_updated", pymongo.DESCENDING)])
     last_updated_date = latest_updated_question["last_updated"]
 
+    stackdb.questions.ensure_index([("last_updated_date", pymongo.ASCENDING)])
+
     print "Processing questions updated after %s" % str(last_updated_date)
-    import_all_questions(posts, namespaces, stackdb.questions.find({"last_updated": {"$gt": last_updated_date}}), True)
+    sorted_questions = stackdb.questions.find({"last_updated_date": {"$gt": last_updated_date}}, sort=[("last_updated_date", pymongo.ASCENDING)])
+    import_all_questions(posts, namespaces, sorted_questions, True)
