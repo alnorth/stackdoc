@@ -1,23 +1,19 @@
 import re
 import sys
-from xml.sax import make_parser, handler
+from pymongo import Connection
 
-if len(sys.argv) < 3:
-    print "This script expects two arguments: \n1. The path to a posts.xml file from a Stack Overflow data dump.\n2. A URL prefix to search for."
+if len(sys.argv) < 2:
+    print "This script expects one argument: A URL prefix to search for."
 else:
-    start_with = sys.argv[2]
+    # Set up the database connection
+    connection = Connection()
+    stackdb = connection.stackdb
 
-    class SOProcessor(handler.ContentHandler):
+    start_with = sys.argv[1]
 
-        def startElement(self, name, attrs):
-            if name == "row":
-                if attrs["PostTypeId"] == "1":
-                    body = attrs["Body"]
-                    if start_with in body:
-                        matches = re.findall(r'<a href="([^"]+)"', body)
-                        for url in filter(lambda x: x.startswith(start_with), matches):
-                            print url, attrs["Tags"]
-
-    parser = make_parser()
-    parser.setContentHandler(SOProcessor())
-    parser.parse(open(sys.argv[1]))
+    for q in stackdb.questions.find():
+        body = q["body"]
+        if start_with in body:
+            matches = re.findall(r'<a href="([^"]+)"', body)
+            for url in filter(lambda x: x.startswith(start_with), matches):
+                print url, "-", (", ".join(q["tags"]))

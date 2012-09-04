@@ -93,15 +93,15 @@ All the processors so far work by looking for URLs in the question body and extr
 * http://support.microsoft.com/default.aspx?scid=836436
 * http://support.microsoft.com/default.aspx?scid=KB;EN-US;836436
 
-I've written a python script to help you find out what variants are used. It's in the scripts directory and it's called `urls-starting-with.py`. This script scans through questions in the data dump and looks for URLs with a prefix you give it. An example call would be:
+I've written a python script to help you find out what variants are used. It's in the scripts directory and it's called `urls-starting-with.py`. This script scans through questions in the question database and looks for URLs with a prefix you give it. An example call would be:
 
-    python urls-starting-with.py ~/path/to/posts.xml http://support.microsoft.com/
+    python urls-starting-with.py http://support.microsoft.com/
 
 This would help you find the URL forms shown above. You can then write a regex or some sort of URL parser to extract the canonical IDs from these URLs.
 
 You should also be wary of hostname changes. For example, the docs at http://docs.oracle.com/ used to be at http://java.sun.com/.
 
-Feel free to be a bit more sophisticated if you want and parse code or whatever, but do be wary of introducing too many false positives.
+Feel free to be a bit more sophisticated if you want and parse code or whatever, but do be careful not to introduce too many false positives.
 
 #### get_tags() ####
 This should return a list of the tags that might appear on questions relating to your library. This might be one or two like for the `jquery` namespace, or loads like the `dotnet` namespace. A question will only be passed to `get_ids` if it's tagged with at least one of the tags from `get_tags`.
