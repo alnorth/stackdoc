@@ -1,5 +1,5 @@
 import pkgutil
-from pymongo import Connection
+import pymongo
 import sys
 import time
 from xml.sax import make_parser, handler
@@ -9,7 +9,7 @@ import stackdoc.namespaces
 
 
 # Set up the database connection
-connection = Connection()
+connection = pymongo.Connection()
 db = connection.stackdoc
 stackdb = connection.stackdb
 posts = db.posts
