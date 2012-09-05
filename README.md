@@ -20,7 +20,7 @@ In order to add support for an extra language you will need to extend the databa
 
 *These instructions are written with Linux in mind. As a result they may well work fine on OS X but require some tweaking for Windows. Let me know how you get on.*
 
-For working with the database update script you'll need **Python**, **virtualenv** and **MongoDB** installed. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
+For working with the database update script you'll need **Python**, **virtualenv** and **MongoDB** installed. In order to run the data API locally you'll need `node`. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
 
 And, of course, you'll need a clone of the StackDoc repository.
 
@@ -43,11 +43,22 @@ You can set up an equivalent environment with this code:
 That last line will start processing SO question data. The first time it runs it will process the whole database. If that completes successfully then it will only process newly added questions next time round. That's unless the questions processors change. Feel free to stop it with Ctrl + C at any point, it should recover fine.
 
 
+### Running the API server ###
+
+When you've got data being imported you'll want it to be visible in your copy of the Chrome extension. This is only going to happen if your Chrome extension is getting data from your local database. For this to happen you need to set up and run the data API.
+
+    cd data-api
+    npm install
+    node main.js 8080
+
+
 ### Installing a test version of the Chrome extension ###
 
 Go to [chrome://chrome/extensions/](chrome://chrome/extensions/) and switch on "Developer mode" (top right). Now click on "Load unpacked extension..." and select the chrome-extension directory. Every time you make changes to the extension files you'll need to come to this page and click on "Reload".
 
 While you're here you might want to disable the official version of the extension so you don't have both running at the same time.
+
+You also need to set your installed copy to take data from your local database. To do this uncomment the line at the top of chrome-extension/main.js.
 
 
 ## Extending StackDoc ##

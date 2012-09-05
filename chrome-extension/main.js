@@ -1,6 +1,10 @@
 var stackdoc = (function() {
     var module = {};
 
+    var dataApiHostName = "stackdocapi.alnorth.com";
+    // Uncomment this for testing on a local database
+    //var dataApiHostName = "localhost:8080";
+
     var sdTemplate = '' +
         '<table class="stackdoc">' +
         '{{#questions}}' +
@@ -17,7 +21,7 @@ var stackdoc = (function() {
         '</div>';
 
     function url(namespace, id) {
-        return "http://stackdocapi.alnorth.com/1/" + encodeURIComponent(namespace) + "/" + encodeURIComponent(id);
+        return "http://" + dataApiHostName + "/1/" + encodeURIComponent(namespace) + "/" + encodeURIComponent(id);
     }
 
     function compareQuestions(a, b) {
