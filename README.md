@@ -20,11 +20,13 @@ In order to add support for an extra language you will need to extend the databa
 
 *These instructions are written with Linux in mind. As a result they may well work fine on OS X but require some tweaking for Windows. Let me know how you get on.*
 
-The big thing that you'll need before you can start work is a copy of a Stack Overflow data dump. These dumps are currently available as [torrents from ClearBits](http://www.clearbits.net/creators/146-stack-exchange-data-dump). They are quite large. Once you've downloaded this you need to decompress a copy of the `posts.xml` file from the Stack Overflow data. You can throw everything else away.
-
 For working with the database update script you'll need **Python**, **virtualenv** and **MongoDB** installed. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
 
 And, of course, you'll need a clone of the StackDoc repository.
+
+The other big thing that you'll need before you can start work is a set of Stack Overflow data. On the live server StackDoc uses the script in [stack-db](https://github.com/alnorth29/stack-db) to keep a full database of questions and answers up to date. For development you don't need all this, you just need a sample of the database. You should download a [database dump](http://files.alnorth.com/so/sample.7z) containing about 10% of questions. Unzip this and then import it into MongoDB with the following command:
+
+    mongoimport -d stackdb -c questions --file sample.json
 
 
 ### Running the database update script ###
@@ -36,9 +38,9 @@ You can set up an equivalent environment with this code:
     cd update-database
     virtualenv venv
     venv/bin/pip install -r requirements.txt
-    venv/bin/python update-database.py ~/path/to/posts.xml
+    venv/bin/python update-database.py
 
-That last line will start parsing the `posts.xml` file. Feel free to stop it with Ctrl + C at any point.
+That last line will start processing SO question data. The first time it runs it will process the whole database. If that completes successfully then it will only process newly added questions next time round. That's unless the questions processors change. Feel free to stop it with Ctrl + C at any point, it should recover fine.
 
 
 ### Installing a test version of the Chrome extension ###
@@ -72,14 +74,14 @@ These canonical IDs should all match the regex `[.a-zA-Z0-9_\-]+` (i.e. characte
 In update-database/stackdoc/namespaces you'll find a python file for each namespace. Create one for your namespace and implement the functions below. If you'd like an example to work from then `pythonpep.py` is a pretty simple one.
 
 #### get_version() ####
-This should return an integer which acts as a version number for your file. Increment this whenever you make changes that will return better results. The update script uses these version numbers to determine whether it needs to import `posts.xml` again. They are only recorded once it has finished processing `posts.xml`, so you don't need to increment this if you stopped the update script before that point.
+This should return an integer which acts as a version number for your file. Increment this whenever you make changes that will return better results. The update script uses these version numbers to determine whether it needs to process the whole question database again. They are only recorded once it has finished processing a full import, so you don't need to increment this if you stopped the update script before that point.
 
 #### get_ids(title, body, tags) ####
 * `title` - a string containing the title of the question.
-* `body` - a string containing the HTML content of the question. In the future this could also be the content of an answer.
+* `body` - a string containing the HTML content a question or an answer.
 * `tags` - a list of strings. The tags applied to this particular question.
 
-This should return a list of the canonical IDs that you've found in the question.
+This should return a list of the canonical IDs that you've found in the text.
 
 All the processors so far work by looking for URLs in the question body and extracting IDs from them, and that's a good start. Have a look at how the current processors do it and then have a go yourself. Keep in mind that there may be several different URL structures that point to the same page. For example, all these URLs lead to the same article:
 
@@ -145,7 +147,7 @@ If there are no questions (and clicking on the `div` will do nothing) then it wi
 #### Updating the manifest ####
 For your JavaScript and CSS file to be loaded on the correct page you will need to tell Chrome to do so. This is done in the `manifest.json` file in the chrome-extension directory.
 
-Add another entry to `content_scripts` like the existing ones. Please do this in alphabetical order of the JS and CSS file names. The rules for the  patterns in `matches` can be seen in [Google's documentation](http://code.google.com/chrome/extensions/match_patterns.html).
+Add another entry to `content_scripts` like the existing ones. Please do this in alphabetical order of the JS and CSS file names. The rules for the patterns in `matches` can be seen in [Google's documentation](http://code.google.com/chrome/extensions/match_patterns.html).
 
 You will also need to add your URL pattern to the array in the first `content_scripts` entry. This will tell Chrome to load the rest of the StackDoc code on your site. Again, please do this in alphabetical order of file name.
 
