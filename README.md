@@ -20,7 +20,7 @@ In order to add support for an extra language you will need to extend the databa
 
 *These instructions are written with Linux in mind. As a result they may well work fine on OS X but require some tweaking for Windows. Let me know how you get on.*
 
-For working with the database update script you'll need **Python**, **virtualenv** and **MongoDB** installed. In order to run the data API locally you'll need `node`. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
+For working with the database update script you'll need **Python**, **virtualenv** and **MongoDB** installed. In order to run the data API locally you'll need **node**. For the Chrome extension you'll need **Chrome/Chromium**, but if you're interested in this extension you've probably got this already.
 
 And, of course, you'll need a clone of the StackDoc repository.
 
