@@ -1,3 +1,7 @@
+import logging
+import logging.config
+
+logging.config.fileConfig("logging.conf")
 
 def import_question(posts, namespaces, upsert, minimum_answer_score, id, title, body, tags, last_activity_date, last_updated_date, score, answers, has_accepted_answer):
     namespaces_for_post = {}
@@ -30,4 +34,4 @@ def import_question(posts, namespaces, upsert, minimum_answer_score, id, title, 
         else:
             posts.insert(post)
 
-        print "Processed %s question from %s (%s)" % (", ".join(namespaces_for_post.keys()), str(last_activity_date), id)
+        logging.debug("Processed %s question from %s (%s)" % (", ".join(namespaces_for_post.keys()), str(last_activity_date), id))

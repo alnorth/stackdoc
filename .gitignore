@@ -27,5 +27,6 @@ pip-log.txt
 .mr.developer.cfg
 
 /update-database/venv
+/update-database/update-database.log*
 *.sublime-workspace
 /data-api/node_modules

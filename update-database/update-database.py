@@ -1,3 +1,5 @@
+import logging
+import logging.config
 import pkgutil
 import pymongo
 import sys
@@ -20,6 +22,8 @@ stackdb = connection.stackdb
 posts = db.posts
 namespace_records = db.namespaces
 
+logging.config.fileConfig("logging.conf")
+
 
 # Load the list of namespaces
 namespaces = {}
@@ -33,10 +37,10 @@ for name, n in namespaces.items():
     record = namespace_records.find_one({"name": name})
     if record:
         if record["version"] != n.get_version():
-            print "Namespace %s outdated (%s != %s), will import whole collection" % (name, record["version"], n.get_version())
+            logging.info("Namespace %s outdated (%s != %s), will import whole collection" % (name, record["version"], n.get_version()))
             version_outdated = True
     else:
-        print "Namespace %s is new, will import whole collection" % name
+        logging.info("Namespace %s is new, will import whole collection" % name)
         version_outdated = True
 
 def import_all_questions(collection, namespaces, questions, upsert):
@@ -92,6 +96,6 @@ else:
 
     stackdb.questions.ensure_index([("last_updated_date", pymongo.ASCENDING)])
 
-    print "Processing questions updated after %s" % str(last_updated_date)
+    logging.info("Processing questions updated after %s" % str(last_updated_date))
     sorted_questions = stackdb.questions.find({"last_updated_date": {"$gt": last_updated_date}}, sort=[("last_updated_date", pymongo.ASCENDING)])
     import_all_questions(posts, namespaces, sorted_questions, True)
