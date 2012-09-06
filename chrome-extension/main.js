@@ -34,9 +34,9 @@ var stackdoc = (function() {
         chrome.extension.sendRequest({gaEvent: {id: id, eventType: eventType}});
     }
 
-    function getQuestionTrackFn(i) {
+    function getQuestionTrackFn(namespace, i) {
         return function() {
-            trackEvent("question-link-" + (i + 1), "clicked");
+            trackEvent(namespace, "question-clicked-" + (i + 1));
         };
     }
 
@@ -65,7 +65,7 @@ var stackdoc = (function() {
 
                         var questionLinks = $(".stackdoc-popover-" + thisIndex + " .stackdoc-question-link");
                         for(var i = 0; i < questionLinks.length; i++) {
-                            $(questionLinks[i]).click(getQuestionTrackFn(i));
+                            $(questionLinks[i]).click(getQuestionTrackFn(namespace, i));
                         }
                     });
                 }
