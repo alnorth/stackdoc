@@ -7,6 +7,11 @@ from xml.sax import make_parser, handler
 from stackdoc.questionimport import import_question
 import stackdoc.namespaces
 
+####### Variables
+# The minimum score required for a question to be processed
+minimum_question_score = 2
+# The minimum score required for an answer to be processed
+minimum_answer_score = minimum_question_score
 
 # Set up the database connection
 connection = pymongo.Connection()
@@ -36,20 +41,22 @@ for name, n in namespaces.items():
 
 def import_all_questions(collection, namespaces, questions, upsert):
     for q in questions:
-        import_question(
-            collection,
-            namespaces,
-            upsert,
-            q["question_id"],
-            q["title"],
-            q["body"],
-            q["tags"],
-            q["last_activity_date"],
-            q["last_updated_date"],
-            q["score"],
-            q["answers"],
-            "accepted_answer_id" in q and q["accepted_answer_id"] > 0
-        )
+        if q["score"] >= minimum_question_score:
+            import_question(
+                collection,
+                namespaces,
+                upsert,
+                minimum_answer_score,
+                q["question_id"],
+                q["title"],
+                q["body"],
+                q["tags"],
+                q["last_activity_date"],
+                q["last_updated_date"],
+                q["score"],
+                q["answers"],
+                "accepted_answer_id" in q and q["accepted_answer_id"] > 0
+            )
 
 
 # If so then process the whole collection
