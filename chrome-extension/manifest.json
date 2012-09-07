@@ -2,7 +2,7 @@
     "name": "StackDoc",
     "version": "0.4.1",
     "manifest_version": 2,
-    "description": "Adds Stackoverflow question lists to online documentation.",
+    "description": "Adds Stack Overflow data to online documentation.",
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
     "background": {
         "scripts": ["background.js"]
